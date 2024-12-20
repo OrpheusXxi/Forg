@@ -1,0 +1,16 @@
+{
+  "name": "forg",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "compile": "cp -r public/* build/ & cp -r assets build/ & tsc",
+    "dev": "cp -r public/* build/ & cp -r assets build/ & tsc --watch & serve build"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "serve": "^14.2.4",
+    "typescript": "^5.7.2"
+  }
+}
