@@ -129,7 +129,7 @@ const frogRightImage = loadImage("assets/gifs/frogRight.gif");
 type Direction = "static" | "left" | "right";
 class Frog extends Entity {
     constructor(x: number, y: number) {
-        super(x, y, 100, 100, frogStaticImage);
+        super(x, y, 300, 300, frogStaticImage);
     }
 
     turn(direction: Direction) {
@@ -191,13 +191,14 @@ function cleanUp(level: Level1) {
 function draw(level: Level1) {
     level.ctx.clearRect(0, 0, 1920, 1080);
 
-    // Background layers
-    level.ctx.drawImage(level.waterfallGif, 0, 0, 1920, 1080);
-    level.ctx.drawImage(level.plantsGif, 0, 0, 1920, 1080);
-    level.ctx.drawImage(level.treeGif, 0, 0, 1920, 1080);
+    // // Background layers
+    // level.ctx.drawImage(level.waterfallGif, 0, 0, 1920, 1080);
+    // level.ctx.drawImage(level.plantsGif, 0, 0, 1920, 1080);
+    // level.ctx.drawImage(level.treeGif, 0, 0, 1920, 1080);
     
     level.bugs.forEach(b => b.render(level.ctx));
     level.trash.forEach(t => t.render(level.ctx));
+    level.frog.render(level.ctx);
 
     // Score
     level.ctx.fillStyle = "black";
@@ -226,6 +227,7 @@ function checkCollision(level: Level1, item: Entity) {
 
 function update(level: Level1) {
     level.bugs.forEach(bug => bug.y += 3);
+    level.trash.forEach(trash => trash.y += 3);
 
     level.bugs.forEach((bug, index) => {
         if (checkCollision(level, bug)) {
