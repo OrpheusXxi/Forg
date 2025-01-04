@@ -1,166 +1,189 @@
-canvas.className = 'level2';
+import { Entity, GameState, Level, loadImage, loop } from "./common";
 
-const border = new Image ();
-border.src = "assets/images/level2-border.png";
+interface Level2 extends Level {
+    bgMusic: HTMLAudioElement,
+    border: HTMLImageElement,
+    border2: HTMLImageElement
+    islands_image: HTMLImageElement,
+    islands2_image: HTMLImageElement,
+    bgr: HTMLImageElement,
+    frogImage: HTMLImageElement,
+    trashImages: HTMLImageElement[],
+    frog: Frog,
+    islands: Island[],
+    trash: Trash[],
+    trashCollected: number,
+    keydown: (e: KeyboardEvent) => void,
+}
 
-const border2 = new Image ();
-border2.src = "assets/images/level2-border2.png";
+class Frog extends Entity {
+}
 
-const islands = new Image ();
-islands.src = "assets/images/level2-islandsMain.png";
+class Island extends Entity {
+    dx: number;
 
-const islands2 = new Image ();
-islands2.src = "assets/images/level2-islands1.png";
-
-const bgr = new Image ();
-bgr.src = "assets/images/level2-bgr.png";
-
-const frog = new Image();
-frog.src = "assets/gifs/frogblink.gif";
-
-const trashImages = [
-    "assets/images/level2-trash1.png",
-    "assets/images/level2-trash2.png",
-    "assets/images/level2-trash3.png",
-    "assets/images/level2-trash4.png",
-    "assets/images/level2-trash5.png",
-    "assets/images/level2-trash6.png"
-].map(src => {
-    const img = new Image();
-    img.src = src;
-    return img;
-});
-
-const bgMusic = new Audio("assets/sounds/Wesly Thomas - Afternoon in Rio.mp3");
-bgMusic.loop = true;
-if (!audioMuted) bgMusic.play(); 
-
-
-export default function level2(ctx, nextLevel) {
-    const frog = {
-        x: 800, y: 950, width: 100, height: 100
-     };
-    const islands = [];
-    const trash = [];
-    let trashCollected = 0;
-    let paused = false;
-
-    const frogGif = document.createElement('img');
-     frogGif.src = frogImage.src;
-     frogGif.style.position = 'absolute';
-     frogGif.style.left = `${frog.x}px`;
-     frogGif.style.top = `${frog.y}px`;
-     frogGif.style.width = `${frog.width}px`;
-     frogGif.style.height = `${frog.height}px`;
-     document.body.appendChild(frogGif);
-
-    function cleanUp() {
-        frogGif.remove();
+    render(ctx: CanvasRenderingContext2D): void {
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
+
+    constructor(x: number, y: number, width: number, height: number, dx: number) {
+        super(x, y, width, height, undefined as any as HTMLImageElement);
+        this.dx = dx;
+    }
+}
+
+class Trash extends Entity {
+    collected: boolean;
+
+    constructor(x: number, y: number, width: number, height: number, img: HTMLImageElement) {
+        super(x, y, width, height, img);
+        this.collected = false;
+    }
+
+    render(ctx: CanvasRenderingContext2D): void {
+        if (!this.collected)
+            ctx.drawImage(this.sprite, this.x, this.y, 60, 60);
+    }
+}
+
+export function start(gameState: GameState, startNextLevel: () => {}) {
+    let bgMusic = new Audio("assets/sounds/Wesly Thomas - Afternoon in Rio.mp3");
+    bgMusic.loop = true;
+    if (!gameState.audioMuted)
+        bgMusic.play();
+
+    let frogImage = loadImage("assets/gifs/frogblink.gif");
+    const level2: Level2 = {
+        ...gameState,
+        startNextLevel: startNextLevel,
+        bgMusic,
+        border: loadImage("assets/images/level2-border.png"),
+        border2: loadImage("assets/images/level2-border2.png"),
+        islands_image: loadImage("assets/images/level2-islandsMain.png"),
+        islands2_image: loadImage("assets/images/level2-islands1.png"),
+        bgr: loadImage("assets/images/level2-bgr.png"),
+        frogImage,
+        trashImages: [
+            "assets/images/level2-trash1.png",
+            "assets/images/level2-trash2.png",
+            "assets/images/level2-trash3.png",
+            "assets/images/level2-trash4.png",
+            "assets/images/level2-trash5.png",
+            "assets/images/level2-trash6.png"
+        ].map(loadImage),
+        frog: new Frog(800, 950, 100, 100, frogImage),
+        islands: [],
+        trash: [],
+        paused: false,
+        trashCollected: 0,
+        renderFn: draw,
+        updateFn: update,
+        shouldContinueFn: shouldContinue,
+        cleanUpFn: cleanUp,
+        keydown: undefined as any as (e: KeyboardEvent) => void,
+    };
 
     // Create islands and trash
     for (let i = 0; i < 13; i++) {
-        islands.push({
-            x: i * 150 + Math.random() * 100,
-            y: 200 + Math.random() * 600,
-            width: 150,
-            height: 30,
-            dx: Math.random() > 0.5 ? 1 : -1,
-        });
-        trash.push({
-            x: islands[i].x + 30,
-            y: islands[i].y - 30,
-            collected: false,
-            img: trashImages[i % trashImages.length]
-        });
+        level2.islands.push(
+            new Island(i * 150 + Math.random() * 100, 200 + Math.random() * 600,
+            150, 30, Math.random() > 0.5 ? 1 : -1));
+        level2.trash.push(
+            new Trash(i * 150 + Math.random() * 100, 200 + Math.random() * 600, 
+            60, 60, level2.trashImages[i % level2.trashImages.length]));
     }
 
-    function draw() {
-        ctx.clearRect(0, 0, 1920, 1080);
+    level2.canvas.className = 'level2';
 
-        // Draw background and borders
-        ctx.drawImage(bgr, 0, 0, 1920, 1080);
-        ctx.drawImage(border, 0, 0, 1920, 1080);
-        ctx.drawImage(border2, 0, 0, 1920, 1080);
+    level2.keydown = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowUp') level2.frog.y -= 50;
+        if (e.key === 'ArrowDown') level2.frog.y += 50;
+        if (e.key === 'ArrowLeft') level2.frog.x -= 10;
+        if (e.key === 'ArrowRight') level2.frog.x += 10;
+    };
 
-        // Draw islands
-        islands.forEach(island => ctx.fillRect(island.x, island.y, island.width, island.height));
+    document.addEventListener('keydown', level2.keydown);
 
-        // Draw trash
-        trash.forEach(item => {
-            if (!item.collected) {
-                ctx.drawImage(item.img, item.x, item.y, 60, 60);
-            }
-        });
+    loop(level2, 0);
+}
 
-        // Draw frog
-        ctx.drawImage(frog, frog.x, frog.y, frog.width, frog.height);
+function draw(level: Level2) {
+    level.ctx.clearRect(0, 0, 1920, 1080);
 
-        // Score
-        ctx.fillStyle = "black";
-        ctx.font = "30px Arial";
-        ctx.fillText(`Trash Collected: ${trashCollected}/13`, 20, 50);
-    }
+    // Draw background and borders
+    level.ctx.drawImage(level.bgr, 0, 0, 1920, 1080);
+    level.ctx.drawImage(level.border, 0, 0, 1920, 1080);
+    level.ctx.drawImage(level.border2, 0, 0, 1920, 1080);
 
-    function update() {
-        // Move islands
-        islands.forEach(island => {
-            island.x += island.dx;
-            if (island.x <= 0 || island.x + island.width >= 1920) {
-                island.dx *= -1; // Reverse direction
-            }
-        });
+    // Draw islands
+    level.islands.forEach(island => island.render(level.ctx));
+    // Draw trash
+    level.trash.forEach(trash => trash.render(level.ctx)); 
 
-        // Check if frog is on an island
-        const onIsland = islands.some(island => {
-            return (
-                frog.y + frog.height === island.y &&
-                frog.x + frog.width > island.x &&
-                frog.x < island.x + island.width
-            );
-        });
+    // Draw frog
+    level.frog.render(level.ctx);
 
-        if (!onIsland && frog.y < 580) {
-            resetFrog(); // Frog fell into water
+    // Score
+    level.ctx.fillStyle = "black";
+    level.ctx.font = "30px Arial";
+    level.ctx.fillText(`Trash Collected: ${level.trashCollected}/13`, 20, 50);
+}
+
+function checkCollision(level: Level2, item: Entity) {
+    return (
+        level.frog.x < item.x + 60 &&
+        level.frog.x + level.frog.width > item.x &&
+        level.frog.y < item.y + 60 &&
+        level.frog.y + level.frog.height > item.y
+    );
+}
+
+function update(level: Level2) {
+    // Move islands
+    level.islands.forEach(island => {
+        island.x += island.dx;
+        if (island.x <= 0 || island.x + island.width >= 1920) {
+            island.dx *= -1; // Reverse direction
         }
-
-        // Check for trash collection
-        trash.forEach(item => {
-            if (
-                !item.collected &&
-                frog.x < item.x + 60 &&
-                frog.x + frog.width > item.x &&
-                frog.y < item.y + 60 &&
-                frog.y + frog.height > item.y
-            ) {
-                item.collected = true;
-                trashCollected++;
-                if ([1, 4, 9, 13].includes(trashCollected)) {
-                    paused = true;
-                    alert(`Educational message for trash piece #${trashCollected}`);
-                    paused = false;
-                }
-            }
-        });
-
-        // Check level completion
-        if (trashCollected >= 13) nextLevel();
-    }
-
-    function loop() {
-        if (!paused) {
-            update();
-            draw();
-        }
-        requestAnimationFrame(loop);
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp') frog.y -= 50;
-        if (e.key === 'ArrowDown') frog.y += 50;
-        if (e.key === 'ArrowLeft') frog.x -= 10;
-        if (e.key === 'ArrowRight') frog.x += 10;
     });
 
-    loop();
+    // Check if frog is on an island
+    const onIsland = level.islands.some(island => {
+        return (
+            level.frog.y + level.frog.height === island.y &&
+            level.frog.x + level.frog.width > island.x &&
+            level.frog.x < island.x + island.width
+        );
+    });
+
+    if (!onIsland && level.frog.y < 580) {
+        resetFrog(level); // Frog fell into water
+    }
+
+    // Check for trash collection
+    level.trash.forEach(item => {
+        if (!item.collected && checkCollision(level, item)) {
+            item.collected = true;
+            level.trashCollected++;
+            if ([1, 4, 9, 13].includes(level.trashCollected)) {
+                level.paused = true;
+                alert(`Educational message for trash piece #${level.trashCollected}`);
+                level.paused = false;
+            }
+        }
+    });
+}
+
+function resetFrog(level: Level2) {
+    level.frog.x = 800;
+    level.frog.y = 950;
+}
+
+function shouldContinue(level: Level2) {
+    return level.trashCollected < 13;
+}
+
+function cleanUp(level: Level2) {
+    document.removeEventListener('keydown', level.keydown);
+    level.bgMusic.pause();
 }

@@ -1,5 +1,4 @@
-import { GameState } from "./gameState.js";
-import { Level } from "./level.js";
+import { Entity, GameState, Level, loadImage, loop } from "./common";
 
 export function start(gameState: GameState, startNextLevel: () => void) {
     const level1: Level1 = {
@@ -14,6 +13,10 @@ export function start(gameState: GameState, startNextLevel: () => void) {
         treeGif: document.createElement('img'),
         waterfallGif: document.createElement('img'),
         plantsGif: document.createElement('img'),
+        renderFn: draw,
+        updateFn: update,
+        shouldContinueFn: shouldContinue,
+        cleanUpFn: cleanUp,
     };
 
     level1.canvas.className = 'level1';
@@ -91,36 +94,11 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     setInterval(() => spawnItem(level1), 1000);
 
     // start game loop
-    loop(level1);
-}
-
-function loadImage(src: string): HTMLImageElement {
-    const img = new Image();
-    img.src = src;
-    return img;
+    loop(level1, 0);
 }
 
 const bgMusic = new Audio("assets/sounds/Joca Perpignan - No mundo da percussão.mp3");
 bgMusic.loop = true;
-
-class Entity {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    sprite: HTMLImageElement;
-
-    constructor(x: number, y: number, width: number, height: number, sprite: HTMLImageElement) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.sprite = sprite;
-    }
-    render(ctx: CanvasRenderingContext2D) {
-        ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
-    }
-}
 
 const frogStaticImage = loadImage("assets/gifs/frogblink.gif");
 const frogLeftImage = loadImage("assets/gifs/frogLeft.gif");
@@ -247,18 +225,14 @@ function update(level: Level1) {
     level.trash = level.trash.filter(item => item.y < 1080);
 }
 
-function loop(level: Level1) {
-    if (!level.paused) {
-        update(level);
-        draw(level);
-    }
+function shouldContinue(level: Level1): boolean {
 
     if (level.score >= 30) {
         level.showPopup("Thanks for the help, human. I am full and I would like to dip my feet in some water.");
 
         cleanUp(level);
         level.startNextLevel();
-        return;
+        return false;
     }
 
     if (level.score >= 5) {
@@ -273,5 +247,5 @@ function loop(level: Level1) {
         level.showPopup("But I was a beast as a small tadpole as well. In order to grow big and live longer than the usual one to three years, I had to eat my siblings. Well, not all of them… But they tasted pretty good!");
     }
 
-    requestAnimationFrame(() => loop(level));
+    return true;
 }
