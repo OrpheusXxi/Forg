@@ -50,3 +50,37 @@ export function loop<L extends Level>(level: L, dt: number) {
         level.startNextLevel();
     }
 }
+
+// Simple score class that 
+// increases score but can 
+// be subscribed to for updates
+// Avoids duplicate reports of the 
+// score change
+export class Score {
+    value: number
+    subscribers: ((value: number) => void)[]
+
+    constructor() {
+        this.value = 0
+        this.subscribers = []
+    }
+
+    subscribe(fn: (value: number) => void) {
+        this.subscribers.push(fn)
+    }
+
+    increment() {
+        this.value += 1
+        this.subscribers.forEach(fn => fn(this.value))
+    }
+
+    decrement() {
+        this.value -= 1
+        // do not notify subscribers when score is decreased
+        // this.subscribers.forEach(fn => fn(this.value))
+    }
+
+    get() {
+        return this.value
+    }
+}

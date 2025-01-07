@@ -1,10 +1,21 @@
-import { Entity, GameState, Level, loadImage, loop } from "./common";
+import { Entity, GameState, Level, loadImage, loop, Score } from "./common";
+import watefallUrl from './assets/gifs/level1-river.gif';
+import plantsUrl from './assets/gifs/level1-plants.gif';
+import treeUrl from './assets/gifs/level1-tree.gif';
+import bgMusicUrl from "./assets/sounds/Joca Perpignan - No mundo da percussão.mp3?url"
+
+const bgMusic = new Audio(bgMusicUrl);
+bgMusic.loop = true;
+
+const frogStaticImage = loadImage(frogStaticUrl);
+const frogLeftImage = loadImage(frogLeftUrl);
+const frogRightImage = loadImage(frogRightUrl);
 
 export function start(gameState: GameState, startNextLevel: () => void) {
     const level1: Level1 = {
         ...gameState,
         frog: new Frog(800, 600),
-        score: 0,
+        score: new Score(),
         bugs: [],
         trash: [],
         startNextLevel: startNextLevel,
@@ -36,14 +47,9 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     //  frogGif.style.zIndex = "4";
     //  document.body.appendChild(frogGif);
 
-    const waterfall = new Image();
-    waterfall.src = "assets/gifs/level1-river.gif"; //part of the bgr
-
-    const plants = new Image();
-    plants.src = "assets/gifs/level1-plants.gif"; //part of the bgr
-
-    const tree = new Image();
-    tree.src = "assets/gifs/level1-tree.gif"; //part of the bgr
+    const waterfall = loadImage(watefallUrl);
+    const plants = loadImage(plantsUrl);
+    const tree = loadImage(treeUrl);
 
     level1.treeGif.src = tree.src;
     level1.treeGif.style.position = 'absolute';
@@ -74,14 +80,14 @@ export function start(gameState: GameState, startNextLevel: () => void) {
             level1.frog.turn('left');
             level1.frog.x = Math.max(0, level1.frog.x - 10);
             //level1.frogGif.src = level1.frogLeft.src;
-        }   
+        }
         if (e.key === 'ArrowRight') {
             level1.frog.turn('right');
             level1.frog.x = Math.min(1820, level1.frog.x + 10);
             //frogGif.src = frogRight.src;
         }
         // console.log(`GIF Source: ${frogGif.src}`);
-         //frogGif.style.left = `${frog.x}px`;
+        //frogGif.style.left = `${frog.x}px`;
     }
     level1.keyup = (e: KeyboardEvent) => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
@@ -91,18 +97,33 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     document.addEventListener('keydown', level1.keydown);
     document.addEventListener('keyup', level1.keyup);
 
+
+    level1.score.subscribe((score) => {
+        if (score === 5) {
+            level1.showPopup("Yum! The insects I just ate are mostly very toxic, that’s where I got my coloring from a long, long time ago. Oh and also many species of frogs from my family, Dendrobatidae, are highly toxic themselves because of their diet.");
+        } else if (score === 10) {
+            level1.showPopup("The chemicals that me and my fellow frogs produce are called alkaloids and they are secreted from my skin. These alkaloids can be used as muscle relaxants, heart stimulants, appetite suppressants and they can also kill people!");
+        } else if (score === 15) {
+            level1.showPopup("I am called a Poison dart frog because the aboriginal South Americans used my toxins to poison the tips of their darts. It made hunting prey a lot easier.");
+        } else if (score === 20) {
+            level1.showPopup("I look cute and welcoming, however I am quite the beast. Both males and females in our family fight for the attention of the other sex. And even after mating, the females try to scare away other females from their mate, as they want him to only look after their own children.");
+        } else if (score === 25) {
+            level1.showPopup("But I was a beast as a small tadpole as well. In order to grow big and live longer than the usual one to three years, I had to eat my siblings. Well, not all of them… But they tasted pretty good!");
+        }
+    });
+
     setInterval(() => spawnItem(level1), 1000);
 
     // start game loop
     loop(level1, 0);
 }
 
-const bgMusic = new Audio("assets/sounds/Joca Perpignan - No mundo da percussão.mp3");
-bgMusic.loop = true;
 
-const frogStaticImage = loadImage("assets/gifs/frogblink.gif");
-const frogLeftImage = loadImage("assets/gifs/frogLeft.gif");
-const frogRightImage = loadImage("assets/gifs/frogRight.gif");
+
+import frogStaticUrl from "./assets/gifs/frogblink.gif";
+import frogLeftUrl from "./assets/gifs/frogLeft.gif";
+import frogRightUrl from "./assets/gifs/frogRight.gif";
+
 
 type Direction = "static" | "left" | "right";
 class Frog extends Entity {
@@ -119,10 +140,14 @@ class Frog extends Entity {
     }
 }
 
+import bug1Url from "./assets/images/level1-bug1.png";
+import bug2Url from "./assets/images/level1-bug2.png";
+import bug3Url from "./assets/images/level1-bug3.png";
+
 const bug_types = {
-    bug1: loadImage("assets/images/level1-bug1.png"),
-    bug2: loadImage("assets/images/level1-bug2.png"),
-    bug3: loadImage("assets/images/level1-bug3.png"),
+    bug1: loadImage(bug1Url),
+    bug2: loadImage(bug2Url),
+    bug3: loadImage(bug3Url),
 }
 
 type BugType = keyof typeof bug_types;
@@ -135,7 +160,8 @@ class Bug extends Entity {
     }
 }
 
-const trashImage = loadImage("assets/images/shit-main.png");
+import trashUrl from "./assets/images/shit-main.png";
+const trashImage = loadImage(trashUrl);
 class Trash extends Entity {
     constructor(x: number, y: number) {
         super(x, y, 75, 75, trashImage);
@@ -144,7 +170,7 @@ class Trash extends Entity {
 
 interface Level1 extends Level {
     frog: Frog,
-    score: number,
+    score: Score,
     bugs: Bug[],
     trash: Trash[],
     keydown: (e: KeyboardEvent) => void,
@@ -173,7 +199,7 @@ function draw(level: Level1) {
     // level.ctx.drawImage(level.waterfallGif, 0, 0, 1920, 1080);
     // level.ctx.drawImage(level.plantsGif, 0, 0, 1920, 1080);
     // level.ctx.drawImage(level.treeGif, 0, 0, 1920, 1080);
-    
+
     level.bugs.forEach(b => b.render(level.ctx));
     level.trash.forEach(t => t.render(level.ctx));
     level.frog.render(level.ctx);
@@ -181,7 +207,7 @@ function draw(level: Level1) {
     // Score
     level.ctx.fillStyle = "black";
     level.ctx.font = "30px lores-12";
-    level.ctx.fillText(`Score: ${level.score}`, 20, 50);
+    level.ctx.fillText(`Score: ${level.score.get()}`, 20, 50);
 }
 
 function spawnItem(level: Level1) {
@@ -209,13 +235,13 @@ function update(level: Level1) {
 
     level.bugs.forEach((bug, index) => {
         if (checkCollision(level, bug)) {
-            level.score += 1;
+            level.score.increment()
             level.bugs.splice(index, 1);
         }
     });
     level.trash.forEach((trash, index) => {
         if (checkCollision(level, trash)) {
-            level.score -= 1;
+            level.score.increment()
             level.trash.splice(index, 1);
         }
     });
@@ -226,25 +252,12 @@ function update(level: Level1) {
 }
 
 function shouldContinue(level: Level1): boolean {
-
-    if (level.score >= 30) {
+    if (level.score.get() >= 30) {
         level.showPopup("Thanks for the help, human. I am full and I would like to dip my feet in some water.");
 
         cleanUp(level);
         level.startNextLevel();
         return false;
-    }
-
-    if (level.score >= 5) {
-        level.showPopup("Yum! The insects I just ate are mostly very toxic, that’s where I got my coloring from a long, long time ago. Oh and also many species of frogs from my family, Dendrobatidae, are highly toxic themselves because of their diet.");
-    } else if (level.score >= 10) {
-        level.showPopup("The chemicals that me and my fellow frogs produce are called alkaloids and they are secreted from my skin. These alkaloids can be used as muscle relaxants, heart stimulants, appetite suppressants and they can also kill people!");
-    } else if (level.score >= 15) {
-        level.showPopup("I am called a Poison dart frog because the aboriginal South Americans used my toxins to poison the tips of their darts. It made hunting prey a lot easier.");
-    } else if (level.score >= 20) {
-        level.showPopup("I look cute and welcoming, however I am quite the beast. Both males and females in our family fight for the attention of the other sex. And even after mating, the females try to scare away other females from their mate, as they want him to only look after their own children.");
-    } else if (level.score >= 25) {
-        level.showPopup("But I was a beast as a small tadpole as well. In order to grow big and live longer than the usual one to three years, I had to eat my siblings. Well, not all of them… But they tasted pretty good!");
     }
 
     return true;

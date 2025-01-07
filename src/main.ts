@@ -1,7 +1,9 @@
-import type { GameState } from './gameState.js';
-import {start as level1Start} from './level1.js';
+import { GameState } from './common';
+import {start as level1Start} from './level1';
+import {start as level2Start} from './level2';
+import {start as level3Start} from './level3';
 
-const levels: ((gameState: GameState, startNextLevel: () => void)=>void)[] = [level1Start];
+const levels: ((gameState: GameState, startNextLevel: () => void)=>void)[] = [level1Start, level2Start, level3Start];
 
 const canvas: HTMLCanvasElement = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
@@ -57,5 +59,6 @@ function startNextLevel() {
 }
 
 function showPopup(message: string): void {
+    alert(message)
     // TODO
 }

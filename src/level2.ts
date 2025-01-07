@@ -1,14 +1,36 @@
 import { Entity, GameState, Level, loadImage, loop } from "./common";
 
+import bgMusicUrl from "./assets/sounds/Wesly Thomas - Afternoon in Rio.mp3?url";
+const bgMusic = new Audio(bgMusicUrl);
+bgMusic.loop = true;
+
+import borderUrl from "./assets/images/level2-border.png";
+const border = loadImage(borderUrl)
+import border2Url from './assets/images/level2-border2.png';
+const border2 = loadImage(border2Url)
+import islandsUrl from "./assets/images/level2-islandsMain.png";
+const islandsImage = loadImage(islandsUrl);
+import islands2Url from "./assets/images/level2-islands1.png";
+const islands2Image = loadImage(islands2Url)
+
+import bgrUrl from "./assets/images/level2-bgr.png";
+const bgr = loadImage(bgrUrl)
+
+import frogUrl from './assets/gifs/frogblink.gif'
+const frogImage = loadImage(frogUrl)
+
+import trash1Url from "./assets/images/level2-trash1.png"
+import trash2Url from "./assets/images/level2-trash2.png"
+import trash3Url from "./assets/images/level2-trash3.png"
+import trash4Url from "./assets/images/level2-trash4.png"
+import trash5Url from "./assets/images/level2-trash5.png"
+import trash6Url from "./assets/images/level2-trash6.png"
+const trashImages = [
+    trash1Url, trash2Url, trash3Url, trash4Url, trash5Url, trash6Url
+].map(loadImage)
+
+
 interface Level2 extends Level {
-    bgMusic: HTMLAudioElement,
-    border: HTMLImageElement,
-    border2: HTMLImageElement
-    islands_image: HTMLImageElement,
-    islands2_image: HTMLImageElement,
-    bgr: HTMLImageElement,
-    frogImage: HTMLImageElement,
-    trashImages: HTMLImageElement[],
     frog: Frog,
     islands: Island[],
     trash: Trash[],
@@ -46,31 +68,13 @@ class Trash extends Entity {
     }
 }
 
-export function start(gameState: GameState, startNextLevel: () => {}) {
-    let bgMusic = new Audio("assets/sounds/Wesly Thomas - Afternoon in Rio.mp3");
-    bgMusic.loop = true;
+export function start(gameState: GameState, startNextLevel: () => void): void {
     if (!gameState.audioMuted)
         bgMusic.play();
 
-    let frogImage = loadImage("assets/gifs/frogblink.gif");
     const level2: Level2 = {
         ...gameState,
         startNextLevel: startNextLevel,
-        bgMusic,
-        border: loadImage("assets/images/level2-border.png"),
-        border2: loadImage("assets/images/level2-border2.png"),
-        islands_image: loadImage("assets/images/level2-islandsMain.png"),
-        islands2_image: loadImage("assets/images/level2-islands1.png"),
-        bgr: loadImage("assets/images/level2-bgr.png"),
-        frogImage,
-        trashImages: [
-            "assets/images/level2-trash1.png",
-            "assets/images/level2-trash2.png",
-            "assets/images/level2-trash3.png",
-            "assets/images/level2-trash4.png",
-            "assets/images/level2-trash5.png",
-            "assets/images/level2-trash6.png"
-        ].map(loadImage),
         frog: new Frog(800, 950, 100, 100, frogImage),
         islands: [],
         trash: [],
@@ -87,10 +91,10 @@ export function start(gameState: GameState, startNextLevel: () => {}) {
     for (let i = 0; i < 13; i++) {
         level2.islands.push(
             new Island(i * 150 + Math.random() * 100, 200 + Math.random() * 600,
-            150, 30, Math.random() > 0.5 ? 1 : -1));
+                150, 30, Math.random() > 0.5 ? 1 : -1));
         level2.trash.push(
-            new Trash(i * 150 + Math.random() * 100, 200 + Math.random() * 600, 
-            60, 60, level2.trashImages[i % level2.trashImages.length]));
+            new Trash(i * 150 + Math.random() * 100, 200 + Math.random() * 600,
+                60, 60, trashImages[i % trashImages.length]));
     }
 
     level2.canvas.className = 'level2';
@@ -111,14 +115,14 @@ function draw(level: Level2) {
     level.ctx.clearRect(0, 0, 1920, 1080);
 
     // Draw background and borders
-    level.ctx.drawImage(level.bgr, 0, 0, 1920, 1080);
-    level.ctx.drawImage(level.border, 0, 0, 1920, 1080);
-    level.ctx.drawImage(level.border2, 0, 0, 1920, 1080);
+    level.ctx.drawImage(bgr, 0, 0, 1920, 1080);
+    level.ctx.drawImage(border, 0, 0, 1920, 1080);
+    level.ctx.drawImage(border2, 0, 0, 1920, 1080);
 
     // Draw islands
     level.islands.forEach(island => island.render(level.ctx));
     // Draw trash
-    level.trash.forEach(trash => trash.render(level.ctx)); 
+    level.trash.forEach(trash => trash.render(level.ctx));
 
     // Draw frog
     level.frog.render(level.ctx);
@@ -185,5 +189,5 @@ function shouldContinue(level: Level2) {
 
 function cleanUp(level: Level2) {
     document.removeEventListener('keydown', level.keydown);
-    level.bgMusic.pause();
+    bgMusic.pause();
 }

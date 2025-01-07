@@ -1,13 +1,49 @@
 import { Entity, GameState, Level, loadImage, loop } from "./common";
 
+// flowerImages: HTMLImageElement[],
+// plainboxImage: HTMLImageElement,
+// acornImage: HTMLImageElement,
+// frogImage: HTMLImageElement,
+// frogglitchImage: HTMLImageElement,
+// treesImage: HTMLImageElement,
+// bgMusic: HTMLAudioElement,
+
+import flower1Url from './assets/images/level3_flower1.png';
+import flower2Url from './assets/images/level3_flower2.png';
+import flower3Url from './assets/images/level3_flower3.png';
+import flower4Url from './assets/images/level3_flower4.png';
+import flower5Url from './assets/images/level3_flower5.png';
+import flower6Url from './assets/images/level3_flower6.png';
+import flower7Url from './assets/images/level3_flower7.png';
+import flower8Url from './assets/images/level3_flower8.png';
+import flower9Url from './assets/images/level3_flower9.png';
+import flower10Url from './assets/images/level3_flower10.png';
+import flower11Url from './assets/images/level3_flower11.png';
+import flower12Url from './assets/images/level3_flower12.png';
+import flower13Url from './assets/images/level3_flower13.png';
+import flower14Url from './assets/images/level3_flower14.png';
+import flower15Url from './assets/images/level3_flower15.png';
+import flower16Url from './assets/images/level3_flower16.png';
+import flower17Url from './assets/images/level3_flower17.png';
+import flower18Url from './assets/images/level3_flower18.png';
+import plainboxUrl from './assets/images/level3_plainbox.png';
+import acorn1Url from './assets/images/level3_acorn1.png';
+import frogUrl from './assets/gifs/frogblink.gif';
+import frogglitchUrl from './assets/gifs/frogglitch.gif';
+import treesUrl from './assets/gifs/level3-trees.gif';
+import bgMusicUrl from './assets/sounds/Le Marigold - Aaraam.mp3?url';  
+
+const flowerImages = [ loadImage(flower1Url), loadImage(flower2Url), loadImage(flower3Url), loadImage(flower4Url), loadImage(flower5Url), loadImage(flower6Url), loadImage(flower7Url), loadImage(flower8Url), loadImage(flower9Url), loadImage(flower10Url), loadImage(flower11Url), loadImage(flower12Url), loadImage(flower13Url), loadImage(flower14Url), loadImage(flower15Url), loadImage(flower16Url), loadImage(flower17Url), loadImage(flower18Url) ];
+const plainboxImage = loadImage(plainboxUrl);
+const acorn1Image = loadImage(acorn1Url);
+const frogImage = loadImage(frogUrl);
+const frogglitchImage = loadImage(frogglitchUrl);
+const treesImage = loadImage(treesUrl);
+const bgMusic = new Audio(bgMusicUrl);
+bgMusic.loop = true;
+
 interface Level3 extends Level {
-    flowerImages: HTMLImageElement[],
-    plainboxImage: HTMLImageElement,
-    acornImage: HTMLImageElement,
-    frogImage: HTMLImageElement,
-    frogglitchImage: HTMLImageElement,
-    treesImage: HTMLImageElement,
-    bgMusic: HTMLAudioElement,
+
     cards: Card[],
     firstCard: Card | null,
     secondCard: Card | null,
@@ -47,13 +83,6 @@ export function start(gameState: GameState, startNextLevel: () => void) {
         renderFn: draw,
         updateFn: update,
         cleanUpFn: cleanUp,
-        flowerImages: [...Array(18).keys()].map(i => loadImage(`assets/images/level3_flower${i + 1}.png`)),
-        plainboxImage: loadImage("assets/images/level3_plainbox.png"),
-        acornImage: loadImage("assets/images/level3_acorn.png"),
-        frogImage: loadImage("assets/gifs/frogblink.gif"),
-        frogglitchImage: loadImage("assets/gifs/frogglitch.gif"),
-        treesImage: loadImage("assets/gifs/level3-trees.gif"),
-        bgMusic: new Audio("assets/sounds/Le Marigold - Aaraam.mp3"),
         cards: [],
         firstCard: null,
         secondCard: null,
@@ -65,15 +94,15 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     }    
     level3.canvas.className = 'level3';
 
-    if (!level3.audioMuted) level3.bgMusic.play();
+    if (!level3.audioMuted) bgMusic.play();
 
     // Initialize cards
-    const allCards = [...level3.flowerImages, ...level3.flowerImages];
+    const allCards = [...flowerImages, ...flowerImages];
     allCards.sort(() => Math.random() - 0.5);
 
     for (let i = 0; i < 36; i++) {
         level3.cards.push(
-            new Card((i % 6) * 300 + 100, Math.floor(i / 6) * 300 + 50, 200, 200, allCards[i] || level3.flowerImages[0], level3.plainboxImage, i));
+            new Card((i % 6) * 300 + 100, Math.floor(i / 6) * 300 + 50, 200, 200, allCards[i] || flowerImages[0], plainboxImage, i));
     }
 
     level3.click = (e: MouseEvent) => {
@@ -90,7 +119,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 function draw(level: Level3) {
     // Draw the level
     level.ctx.clearRect(0, 0, 1920, 1080);
-    level.ctx.drawImage(level.treesImage, 0, 0, 1920, 1080);
+    level.ctx.drawImage(treesImage, 0, 0, 1920, 1080);
 
     level.cards.forEach(card => card.render(level.ctx));
 
@@ -124,7 +153,7 @@ function cleanUp(level: Level3) {
     // Clean up the level
     //frogGif.remove();
     //treesGif.remove();
-    level.bgMusic.pause();
+    bgMusic.pause();
     level.canvas.removeEventListener('click', level.click);
 }
 
@@ -163,7 +192,7 @@ function checkMatch(level: Level3) {
         if (level.matchedPairs >= 18) {
             level.shouldContinueFn = () => false;
             alert("Level completed!");
-            level.ctx.drawImage(level.frogglitchImage, 800, 400, 300, 300);
+            level.ctx.drawImage(frogglitchImage, 800, 400, 300, 300);
         }
     } else if (level.firstCard && level.secondCard) {
         level.firstCard.revealed = false;
