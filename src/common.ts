@@ -7,7 +7,7 @@ export interface Sprite {
     render(ctx: CanvasRenderingContext2D, dt: number, x: number, y: number, width: number, height: number): void;
 }
 
-export class ImageSprite implements Sprite {
+export class StaticSprite implements Sprite {
     img: HTMLImageElement;
 
     constructor(img: HTMLImageElement) {

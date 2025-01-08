@@ -1,4 +1,4 @@
-import { AnimatedSprite, Entity, GameState, ImageSprite as StaticSprite, Level, loadImage, loop, Score, Sprite } from "./common";
+import { AnimatedSprite, Entity, GameState, StaticSprite as StaticSprite, Level, loadImage, loop, Score, Sprite } from "./common";
 import watefallUrl from './assets/gifs/level1-river.gif';
 import plantsUrl from './assets/gifs/level1-plants.gif';
 import treeUrl from './assets/gifs/level1-tree.gif';

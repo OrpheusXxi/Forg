@@ -1,4 +1,4 @@
-import { Entity, GameState, ImageSprite, Level, loadImage, loop } from "./common";
+import { Entity, GameState, StaticSprite, Level, loadImage, loop } from "./common";
 
 // flowerImages: HTMLImageElement[],
 // plainboxImage: HTMLImageElement,
@@ -33,8 +33,8 @@ import frogglitchUrl from './assets/gifs/frogglitch.gif';
 import treesUrl from './assets/gifs/level3-trees.gif';
 import bgMusicUrl from './assets/sounds/Le Marigold - Aaraam.mp3?url';  
 
-const flowerImages = [ loadImage(flower1Url), loadImage(flower2Url), loadImage(flower3Url), loadImage(flower4Url), loadImage(flower5Url), loadImage(flower6Url), loadImage(flower7Url), loadImage(flower8Url), loadImage(flower9Url), loadImage(flower10Url), loadImage(flower11Url), loadImage(flower12Url), loadImage(flower13Url), loadImage(flower14Url), loadImage(flower15Url), loadImage(flower16Url), loadImage(flower17Url), loadImage(flower18Url) ].map(img => new ImageSprite(img));
-const plainboxImage = new ImageSprite(loadImage(plainboxUrl));
+const flowerImages = [ loadImage(flower1Url), loadImage(flower2Url), loadImage(flower3Url), loadImage(flower4Url), loadImage(flower5Url), loadImage(flower6Url), loadImage(flower7Url), loadImage(flower8Url), loadImage(flower9Url), loadImage(flower10Url), loadImage(flower11Url), loadImage(flower12Url), loadImage(flower13Url), loadImage(flower14Url), loadImage(flower15Url), loadImage(flower16Url), loadImage(flower17Url), loadImage(flower18Url) ].map(img => new StaticSprite(img));
+const plainboxImage = new StaticSprite(loadImage(plainboxUrl));
 const acorn1Image = loadImage(acorn1Url);
 const frogImage = loadImage(frogUrl);
 const frogglitchImage = loadImage(frogglitchUrl);

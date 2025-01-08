@@ -1,4 +1,4 @@
-import { Entity, GameState, ImageSprite, Level, loadImage, loop } from "./common";
+import { Entity, GameState, StaticSprite, Level, loadImage, loop } from "./common";
 
 import bgMusicUrl from "./assets/sounds/Wesly Thomas - Afternoon in Rio.mp3?url";
 const bgMusic = new Audio(bgMusicUrl);
@@ -17,7 +17,7 @@ import bgrUrl from "./assets/images/level2-bgr.png";
 const bgr = loadImage(bgrUrl)
 
 import frogUrl from './assets/gifs/frogblink.gif'
-const frogImage = new ImageSprite(loadImage(frogUrl))
+const frogImage = new StaticSprite(loadImage(frogUrl))
 
 import trash1Url from "./assets/images/level2-trash1.png"
 import trash2Url from "./assets/images/level2-trash2.png"
@@ -27,7 +27,7 @@ import trash5Url from "./assets/images/level2-trash5.png"
 import trash6Url from "./assets/images/level2-trash6.png"
 const trashImages = [
     trash1Url, trash2Url, trash3Url, trash4Url, trash5Url, trash6Url
-].map(loadImage).map(img => new ImageSprite(img));
+].map(loadImage).map(img => new StaticSprite(img));
 
 
 interface Level2 extends Level {
