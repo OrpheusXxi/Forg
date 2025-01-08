@@ -73,6 +73,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     level1.waterfallGif.style.top = '0px';
     level1.waterfallGif.style.width = 'auto';
     level1.waterfallGif.style.height = 'auto';
+    level1.waterfallGif.style.zIndex = "-1";
     document.body.appendChild(level1.waterfallGif);
 
     level1.plantsGif.src = plants.src;
