@@ -1,20 +1,54 @@
-export class Entity {
+export interface AnimationFrame {
+    img: HTMLImageElement;
+    duration: number;
+}
+
+export interface Sprite {
+    render(ctx: CanvasRenderingContext2D, dt: number, x: number, y: number, width: number, height: number): void;
+}
+
+export class ImageSprite implements Sprite {
+    img: HTMLImageElement;
+
+    constructor(img: HTMLImageElement) {
+        this.img = img;
+    }
+
+    render(ctx: CanvasRenderingContext2D, dt: number, x: number, y: number, width: number, height: number) {
+        ctx.drawImage(this.img, x, y, width, height);
+    }
+}
+
+export class AnimatedSprite implements Sprite {
+    frames: AnimationFrame[];
+    currentFrame: number;
+
+
+    constructor(frames: AnimationFrame[]) {
+        this.frames = frames;
+        this.currentFrame = 0;
+    }
+
+    // render function that depending on the time passed renders the correct frame
+    // according to the duration
+    render(ctx: CanvasRenderingContext2D, dt: number, x: number, y: number, width: number, height: number) {
+        const frame = this.frames[this.currentFrame];
+        ctx.drawImage(frame.img, x, y, width, height);
+        frame.duration -= dt;
+        if (frame.duration <= 0) {
+            this.currentFrame = (this.currentFrame + 1) % this.frames.length;
+            this.frames[this.currentFrame].duration = frame.duration;
+        }
+    }
+}
+
+export interface Entity {
     x: number;
     y: number;
     width: number;
     height: number;
-    sprite: HTMLImageElement;
 
-    constructor(x: number, y: number, width: number, height: number, sprite: HTMLImageElement) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.sprite = sprite;
-    }
-    render(ctx: CanvasRenderingContext2D) {
-        ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
-    }
+    render(ctx: CanvasRenderingContext2D, dt: number): void;
 }
 
 export function loadImage(src: string): HTMLImageElement {
@@ -34,7 +68,7 @@ export interface GameState {
 
 export interface Level extends GameState {
     startNextLevel(): void,
-    renderFn(level: Level): void, 
+    renderFn(level: Level, dt: number): void, 
     updateFn(level: Level, dt: number): void, 
     shouldContinueFn(level: Level): boolean,
     cleanUpFn(level: Level): void,
@@ -47,7 +81,7 @@ export function loop<L extends Level>(level: L, timestamp: number) {
 
     if (level.shouldContinueFn(level)) {
         level.updateFn(level, dt);
-        level.renderFn(level);
+        level.renderFn(level, dt);
         requestAnimationFrame((dt) => loop(level, dt));
     } else {
         level.cleanUpFn(level);

@@ -1,4 +1,4 @@
-import { Entity, GameState, Level, loadImage, loop } from "./common";
+import { Entity, GameState, ImageSprite, Level, loadImage, loop } from "./common";
 
 // flowerImages: HTMLImageElement[],
 // plainboxImage: HTMLImageElement,
@@ -33,8 +33,8 @@ import frogglitchUrl from './assets/gifs/frogglitch.gif';
 import treesUrl from './assets/gifs/level3-trees.gif';
 import bgMusicUrl from './assets/sounds/Le Marigold - Aaraam.mp3?url';  
 
-const flowerImages = [ loadImage(flower1Url), loadImage(flower2Url), loadImage(flower3Url), loadImage(flower4Url), loadImage(flower5Url), loadImage(flower6Url), loadImage(flower7Url), loadImage(flower8Url), loadImage(flower9Url), loadImage(flower10Url), loadImage(flower11Url), loadImage(flower12Url), loadImage(flower13Url), loadImage(flower14Url), loadImage(flower15Url), loadImage(flower16Url), loadImage(flower17Url), loadImage(flower18Url) ];
-const plainboxImage = loadImage(plainboxUrl);
+const flowerImages = [ loadImage(flower1Url), loadImage(flower2Url), loadImage(flower3Url), loadImage(flower4Url), loadImage(flower5Url), loadImage(flower6Url), loadImage(flower7Url), loadImage(flower8Url), loadImage(flower9Url), loadImage(flower10Url), loadImage(flower11Url), loadImage(flower12Url), loadImage(flower13Url), loadImage(flower14Url), loadImage(flower15Url), loadImage(flower16Url), loadImage(flower17Url), loadImage(flower18Url) ].map(img => new ImageSprite(img));
+const plainboxImage = new ImageSprite(loadImage(plainboxUrl));
 const acorn1Image = loadImage(acorn1Url);
 const frogImage = loadImage(frogUrl);
 const frogglitchImage = loadImage(frogglitchUrl);
@@ -53,25 +53,30 @@ interface Level3 extends Level {
     click: (e: MouseEvent) => void,
 }
 
-class Card extends Entity {
+class Card implements Entity {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
     revealed: boolean;
     matched: boolean;
-    backSprite: HTMLImageElement;
     value: number;
 
-    constructor(x: number, y: number, width: number, height: number, sprite: HTMLImageElement, backSprite: HTMLImageElement, value: number) {
-        super(x, y, width, height, sprite);
+    constructor(x: number, y: number, width: number, height: number, value: number) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.revealed = false;
         this.matched = false;
-        this.backSprite = backSprite;
         this.value = value;
     }
 
-    render(ctx: CanvasRenderingContext2D) {
+    render(ctx: CanvasRenderingContext2D, dt: number): void {
         if (this.revealed || this.matched) {
-            ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);            
+            flowerImages[this.value].render(ctx, dt, this.x, this.y, this.width, this.height);
         } else {
-            ctx.drawImage(this.backSprite, this.x, this.y, this.width, this.height);
+            plainboxImage.render(ctx, dt, this.x, this.y, this.width, this.height);
         }
     }
 }
@@ -102,7 +107,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 
     for (let i = 0; i < 36; i++) {
         level3.cards.push(
-            new Card((i % 6) * 300 + 100, Math.floor(i / 6) * 300 + 50, 200, 200, allCards[i] || flowerImages[0], plainboxImage, i));
+            new Card((i % 6) * 300 + 100, Math.floor(i / 6) * 300 + 50, 200, 200, i));
     }
 
     level3.click = (e: MouseEvent) => {
@@ -116,12 +121,12 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     loop(level3, 0);
 }
 
-function draw(level: Level3) {
+function draw(level: Level3, dt: number) {
     // Draw the level
     level.ctx.clearRect(0, 0, 1920, 1080);
     level.ctx.drawImage(treesImage, 0, 0, 1920, 1080);
 
-    level.cards.forEach(card => card.render(level.ctx));
+    level.cards.forEach(card => card.render(level.ctx, dt));
 
     level.ctx.fillStyle = "black";
     level.ctx.font = "30px Arial";

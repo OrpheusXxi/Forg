@@ -1,4 +1,4 @@
-import { Entity, GameState, Level, loadImage, loop, Score } from "./common";
+import { AnimatedSprite, Entity, GameState, ImageSprite, Level, loadImage, loop, Score, Sprite } from "./common";
 import watefallUrl from './assets/gifs/level1-river.gif';
 import plantsUrl from './assets/gifs/level1-plants.gif';
 import treeUrl from './assets/gifs/level1-tree.gif';
@@ -7,9 +7,17 @@ import bgMusicUrl from "./assets/sounds/Joca Perpignan - No mundo da percussão.
 const bgMusic = new Audio(bgMusicUrl);
 bgMusic.loop = true;
 
-const frogStaticImage = loadImage(frogStaticUrl);
-const frogLeftImage = loadImage(frogLeftUrl);
-const frogRightImage = loadImage(frogRightUrl);
+import frogStaticUrl from "./assets/gifs/frogblink.gif";
+import frogLeftUrl from "./assets/gifs/frogLeft.gif";
+import frogRightUrl from "./assets/gifs/frogRight.gif";
+const frogStaticImage = new ImageSprite(loadImage(frogStaticUrl));
+const frogLeftImage = new ImageSprite(loadImage(frogLeftUrl));
+const frogRightImage = new ImageSprite(loadImage(frogRightUrl));
+// new AnimatedSprite([
+//     {img: loadImage(frogRightUrl), duration: 100},
+//     {img: loadImage(frogStaticUrl), duration: 100},
+//     {img: loadImage(frogRightUrl), duration: 100},
+// ]);
 
 export function start(gameState: GameState, startNextLevel: () => void) {
     const level1: Level1 = {
@@ -118,25 +126,33 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     loop(level1, 0);
 }
 
+const frogSprites: Map<Direction, Sprite> = new Map([
+    ["static", frogStaticImage as Sprite], // typechecking workaround
+    ["left", frogLeftImage],
+    ["right", frogRightImage],
+    //["glitch", new AnimatedSprite([])],
+]);
+type Direction = "static" | "left" | "right"// | "glitch";
+class Frog implements Entity {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    direction: Direction;
 
-
-import frogStaticUrl from "./assets/gifs/frogblink.gif";
-import frogLeftUrl from "./assets/gifs/frogLeft.gif";
-import frogRightUrl from "./assets/gifs/frogRight.gif";
-
-
-type Direction = "static" | "left" | "right";
-class Frog extends Entity {
     constructor(x: number, y: number) {
-        super(x, y, 300, 300, frogStaticImage);
+        this.x = x;
+        this.y = y;
+        this.width = 100;
+        this.height = 100;  
+        this.direction = "static";
     }
 
+    render(ctx: CanvasRenderingContext2D, dt: number): void {
+        frogSprites.get(this.direction)?.render(ctx, dt, this.x, this.y, this.width, this.height);
+    }
     turn(direction: Direction) {
-        switch (direction) {
-            case "static": this.sprite = frogStaticImage; break;
-            case "left": this.sprite = frogLeftImage; break;
-            case "right": this.sprite = frogRightImage; break;
-        }
+        this.direction = direction;
     }
 }
 
@@ -145,26 +161,49 @@ import bug2Url from "./assets/images/level1-bug2.png";
 import bug3Url from "./assets/images/level1-bug3.png";
 
 const bug_types = {
-    bug1: loadImage(bug1Url),
-    bug2: loadImage(bug2Url),
-    bug3: loadImage(bug3Url),
+    bug1: new ImageSprite(loadImage(bug1Url)),
+    bug2: new ImageSprite(loadImage(bug2Url)),
+    bug3: new ImageSprite(loadImage(bug3Url)),
 }
 
 type BugType = keyof typeof bug_types;
-class Bug extends Entity {
+class Bug implements Entity {
     type: BugType;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 
     constructor(type: BugType, x: number, y: number) {
-        super(x, y, 75, 75, bug_types[type]);
+        this.x = x;
+        this.y = y;
+        this.width = 75;
+        this.height = 75;
         this.type = type;
+    }
+
+    render(ctx: CanvasRenderingContext2D, dt: number): void {
+        bug_types[this.type].render(ctx, dt, this.x, this.y, this.width, this.height);
     }
 }
 
 import trashUrl from "./assets/images/shit-main.png";
-const trashImage = loadImage(trashUrl);
-class Trash extends Entity {
+const trashImage = new ImageSprite(loadImage(trashUrl));
+class Trash implements Entity {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+
     constructor(x: number, y: number) {
-        super(x, y, 75, 75, trashImage);
+        this.x = x;
+        this.y = y;
+        this.width = 75;
+        this.height = 75;
+    }
+
+    render(ctx: CanvasRenderingContext2D, dt: number): void {
+        trashImage.render(ctx, dt, this.x, this.y, this.width, this.height)
     }
 }
 
@@ -192,7 +231,7 @@ function cleanUp(level: Level1) {
 }
 
 
-function draw(level: Level1) {
+function draw(level: Level1, dt: number) {
     level.ctx.clearRect(0, 0, 1920, 1080);
 
     // // Background layers
@@ -200,9 +239,9 @@ function draw(level: Level1) {
     // level.ctx.drawImage(level.plantsGif, 0, 0, 1920, 1080);
     // level.ctx.drawImage(level.treeGif, 0, 0, 1920, 1080);
 
-    level.bugs.forEach(b => b.render(level.ctx));
-    level.trash.forEach(t => t.render(level.ctx));
-    level.frog.render(level.ctx);
+    level.bugs.forEach(b => b.render(level.ctx, dt));
+    level.trash.forEach(t => t.render(level.ctx, dt));
+    level.frog.render(level.ctx, dt);
 
     // Score
     level.ctx.fillStyle = "black";

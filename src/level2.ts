@@ -1,4 +1,4 @@
-import { Entity, GameState, Level, loadImage, loop } from "./common";
+import { Entity, GameState, ImageSprite, Level, loadImage, loop } from "./common";
 
 import bgMusicUrl from "./assets/sounds/Wesly Thomas - Afternoon in Rio.mp3?url";
 const bgMusic = new Audio(bgMusicUrl);
@@ -17,7 +17,7 @@ import bgrUrl from "./assets/images/level2-bgr.png";
 const bgr = loadImage(bgrUrl)
 
 import frogUrl from './assets/gifs/frogblink.gif'
-const frogImage = loadImage(frogUrl)
+const frogImage = new ImageSprite(loadImage(frogUrl))
 
 import trash1Url from "./assets/images/level2-trash1.png"
 import trash2Url from "./assets/images/level2-trash2.png"
@@ -27,7 +27,7 @@ import trash5Url from "./assets/images/level2-trash5.png"
 import trash6Url from "./assets/images/level2-trash6.png"
 const trashImages = [
     trash1Url, trash2Url, trash3Url, trash4Url, trash5Url, trash6Url
-].map(loadImage)
+].map(loadImage).map(img => new ImageSprite(img));
 
 
 interface Level2 extends Level {
@@ -38,33 +38,65 @@ interface Level2 extends Level {
     keydown: (e: KeyboardEvent) => void,
 }
 
-class Frog extends Entity {
+
+class Frog implements Entity {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+
+    constructor(x: number, y: number, width: number, height: number) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+    render(ctx: CanvasRenderingContext2D, dt: number): void {
+        frogImage.render(ctx, dt, this.x, this.y, this.width, this.height);
+    }
 }
 
-class Island extends Entity {
+class Island implements Entity {
+    x: number;
+    y: number;
+    width: number;
+    height: number;    
     dx: number;
 
-    render(ctx: CanvasRenderingContext2D): void {
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+    constructor(x: number, y: number, width: number, height: number, dx: number) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.dx = dx;
     }
 
-    constructor(x: number, y: number, width: number, height: number, dx: number) {
-        super(x, y, width, height, undefined as any as HTMLImageElement);
-        this.dx = dx;
+    render(ctx: CanvasRenderingContext2D, dt: number): void {
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
 
-class Trash extends Entity {
+class Trash implements Entity {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
     collected: boolean;
+    trash_type: number;
 
-    constructor(x: number, y: number, width: number, height: number, img: HTMLImageElement) {
-        super(x, y, width, height, img);
+    constructor(x: number, y: number, width: number, height: number, trash_type: number) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.collected = false;
+        this.trash_type = trash_type;
     }
 
-    render(ctx: CanvasRenderingContext2D): void {
+    render(ctx: CanvasRenderingContext2D, dt: number): void {
         if (!this.collected)
-            ctx.drawImage(this.sprite, this.x, this.y, 60, 60);
+            trashImages[this.trash_type].render(ctx, dt, this.x, this.y, this.width, this.height);
     }
 }
 
@@ -75,7 +107,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
     const level2: Level2 = {
         ...gameState,
         startNextLevel: startNextLevel,
-        frog: new Frog(800, 950, 100, 100, frogImage),
+        frog: new Frog(800, 950, 100, 100),
         islands: [],
         trash: [],
         paused: false,
@@ -94,7 +126,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
                 150, 30, Math.random() > 0.5 ? 1 : -1));
         level2.trash.push(
             new Trash(i * 150 + Math.random() * 100, 200 + Math.random() * 600,
-                60, 60, trashImages[i % trashImages.length]));
+                60, 60, i % trashImages.length));
     }
 
     level2.canvas.className = 'level2';
@@ -111,7 +143,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
     loop(level2, 0);
 }
 
-function draw(level: Level2) {
+function draw(level: Level2, dt: number) {
     level.ctx.clearRect(0, 0, 1920, 1080);
 
     // Draw background and borders
@@ -120,12 +152,12 @@ function draw(level: Level2) {
     level.ctx.drawImage(border2, 0, 0, 1920, 1080);
 
     // Draw islands
-    level.islands.forEach(island => island.render(level.ctx));
+    level.islands.forEach(island => island.render(level.ctx, dt));
     // Draw trash
-    level.trash.forEach(trash => trash.render(level.ctx));
+    level.trash.forEach(trash => trash.render(level.ctx, dt));
 
     // Draw frog
-    level.frog.render(level.ctx);
+    level.frog.render(level.ctx, dt);
 
     // Score
     level.ctx.fillStyle = "black";
