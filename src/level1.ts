@@ -1,4 +1,4 @@
-import { AnimatedSprite, Entity, GameState, ImageSprite, Level, loadImage, loop, Score, Sprite } from "./common";
+import { AnimatedSprite, Entity, GameState, ImageSprite as StaticSprite, Level, loadImage, loop, Score, Sprite } from "./common";
 import watefallUrl from './assets/gifs/level1-river.gif';
 import plantsUrl from './assets/gifs/level1-plants.gif';
 import treeUrl from './assets/gifs/level1-tree.gif';
@@ -7,12 +7,18 @@ import bgMusicUrl from "./assets/sounds/Joca Perpignan - No mundo da percussão.
 const bgMusic = new Audio(bgMusicUrl);
 bgMusic.loop = true;
 
-import frogStaticUrl from "./assets/gifs/frogblink.gif";
+//import frogStaticUrl from "./assets/gifs/frogblink.gif";
+import frog_blink_anim_f1 from "./assets/gifs/frog_blink_anim/IMG_2885.png";
+import frog_blink_anim_f2 from "./assets/gifs/frog_blink_anim/IMG_2886.png";
+
 import frogLeftUrl from "./assets/gifs/frogLeft.gif";
 import frogRightUrl from "./assets/gifs/frogRight.gif";
-const frogStaticImage = new ImageSprite(loadImage(frogStaticUrl));
-const frogLeftImage = new ImageSprite(loadImage(frogLeftUrl));
-const frogRightImage = new ImageSprite(loadImage(frogRightUrl));
+const frogStaticImage = new AnimatedSprite([
+    {img: loadImage(frog_blink_anim_f1), duration: 3000},
+    {img: loadImage(frog_blink_anim_f2), duration: 500},
+]);
+const frogLeftImage = new StaticSprite(loadImage(frogLeftUrl));
+const frogRightImage = new StaticSprite(loadImage(frogRightUrl));
 // new AnimatedSprite([
 //     {img: loadImage(frogRightUrl), duration: 100},
 //     {img: loadImage(frogStaticUrl), duration: 100},
@@ -144,8 +150,8 @@ class Frog implements Entity {
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.width = 100;
-        this.height = 100;  
+        this.width = 300;
+        this.height = 300;  
         this.direction = "static";
     }
 
@@ -162,9 +168,9 @@ import bug2Url from "./assets/images/level1-bug2.png";
 import bug3Url from "./assets/images/level1-bug3.png";
 
 const bug_types = {
-    bug1: new ImageSprite(loadImage(bug1Url)),
-    bug2: new ImageSprite(loadImage(bug2Url)),
-    bug3: new ImageSprite(loadImage(bug3Url)),
+    bug1: new StaticSprite(loadImage(bug1Url)),
+    bug2: new StaticSprite(loadImage(bug2Url)),
+    bug3: new StaticSprite(loadImage(bug3Url)),
 }
 
 type BugType = keyof typeof bug_types;
@@ -189,7 +195,7 @@ class Bug implements Entity {
 }
 
 import trashUrl from "./assets/images/shit-main.png";
-const trashImage = new ImageSprite(loadImage(trashUrl));
+const trashImage = new StaticSprite(loadImage(trashUrl));
 class Trash implements Entity {
     x: number;
     y: number;

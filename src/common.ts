@@ -22,11 +22,12 @@ export class ImageSprite implements Sprite {
 export class AnimatedSprite implements Sprite {
     frames: AnimationFrame[];
     currentFrame: number;
-
+    durationOfCurrentFrame: number;
 
     constructor(frames: AnimationFrame[]) {
         this.frames = frames;
         this.currentFrame = 0;
+        this.durationOfCurrentFrame = 0;
     }
 
     // render function that depending on the time passed renders the correct frame
@@ -34,10 +35,11 @@ export class AnimatedSprite implements Sprite {
     render(ctx: CanvasRenderingContext2D, dt: number, x: number, y: number, width: number, height: number) {
         const frame = this.frames[this.currentFrame];
         ctx.drawImage(frame.img, x, y, width, height);
-        frame.duration -= dt;
-        if (frame.duration <= 0) {
+
+        this.durationOfCurrentFrame += dt;
+        if (this.durationOfCurrentFrame >= frame.duration) {
             this.currentFrame = (this.currentFrame + 1) % this.frames.length;
-            this.frames[this.currentFrame].duration = frame.duration;
+            this.durationOfCurrentFrame = 0;
         }
     }
 }
