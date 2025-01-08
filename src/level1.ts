@@ -241,7 +241,7 @@ function update(level: Level1) {
     });
     level.trash.forEach((trash, index) => {
         if (checkCollision(level, trash)) {
-            level.score.increment()
+            level.score.decrement()
             level.trash.splice(index, 1);
         }
     });

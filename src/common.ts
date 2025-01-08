@@ -40,7 +40,11 @@ export interface Level extends GameState {
     cleanUpFn(level: Level): void,
 }
 
-export function loop<L extends Level>(level: L, dt: number) {
+let last_frame: number = -1;
+export function loop<L extends Level>(level: L, timestamp: number) {
+    let dt = last_frame > 0 ? timestamp - last_frame : 0;
+    last_frame = timestamp;
+
     if (level.shouldContinueFn(level)) {
         level.updateFn(level, dt);
         level.renderFn(level);
