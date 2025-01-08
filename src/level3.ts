@@ -45,8 +45,8 @@ bgMusic.loop = true;
 interface Level3 extends Level {
 
     cards: Card[],
-    firstCard: Card | null,
-    secondCard: Card | null,
+    firstCard: number | null,
+    secondCard: number | null,
     matchedPairs: number,
     timer: number,
     interval: number,
@@ -61,8 +61,9 @@ class Card implements Entity {
     revealed: boolean;
     matched: boolean;
     value: number;
+    index: number;
 
-    constructor(x: number, y: number, width: number, height: number, value: number) {
+    constructor(x: number, y: number, width: number, height: number, value: number, index: number) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -70,6 +71,7 @@ class Card implements Entity {
         this.revealed = false;
         this.matched = false;
         this.value = value;
+        this.index = index;
     }
 
     render(ctx: CanvasRenderingContext2D, dt: number): void {
@@ -79,6 +81,17 @@ class Card implements Entity {
             plainboxImage.render(ctx, dt, this.x, this.y, this.width, this.height);
         }
     }
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+    const shuffled = array.slice();
+    for (let iters = 0; iters < 100; iters++) {
+       for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+    }
+    return shuffled;
 }
 
 export function start(gameState: GameState, startNextLevel: () => void) {
@@ -102,13 +115,16 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     if (!level3.audioMuted) bgMusic.play();
 
     // Initialize cards
-    const allCards = [...flowerImages, ...flowerImages];
-    allCards.sort(() => Math.random() - 0.5);
+    let allCards = new Array(36).fill(0).map((_, i) => i % 18);
+    allCards = shuffleArray(allCards);
+    console.log(allCards);
 
-    for (let i = 0; i < 36; i++) {
+    allCards.forEach((value, i) => {
+        // 6 cards per row, 6 rows
+        // first x, then y, then width, then height
         level3.cards.push(
-            new Card((i % 6) * 300 + 100, Math.floor(i / 6) * 300 + 50, 200, 200, i));
-    }
+            new Card((i % 6) * 300 + 100, Math.floor(i / 6) * 200 + 50, 100, 100, value, i));
+    });
 
     level3.click = (e: MouseEvent) => {
         const rect = level3.canvas.getBoundingClientRect();
@@ -138,7 +154,7 @@ function update(level: Level3, dt: number) {
     // Update the level
     if (level.timer <= 0) {
         clearInterval(level.interval);
-        alert("Time's up! Restarting level.");
+        level.showPopup("Time's up! Restarting level.");
 
         // restart the level by the basic mechanism
         // of overriding the startNextLevel function
@@ -163,7 +179,13 @@ function cleanUp(level: Level3) {
 }
 
 function handleClick(level: Level3, x: number, y: number) {
-    if (level.firstCard && level.secondCard) return;
+    console.log("Clicked!", x, y, level.firstCard, level.secondCard);
+    if (level.firstCard && level.secondCard) {
+        level.cards[level.firstCard].revealed = false;
+        level.cards[level.secondCard].revealed = false;
+        level.firstCard = null;
+        level.secondCard = null;
+    }
 
     const clickedCard = level.cards.find(card => {
         return (
@@ -179,35 +201,28 @@ function handleClick(level: Level3, x: number, y: number) {
     clickedCard.revealed = true;
 
     if (!level.firstCard) {
-        level.firstCard = clickedCard;
+        level.firstCard = clickedCard.index;
     } else {
-        level.secondCard = clickedCard;
+        level.secondCard = clickedCard.index;
         checkMatch(level);
     }
 }
 
 function checkMatch(level: Level3) {
     if (level.firstCard && level.secondCard &&
-        level.firstCard.value === level.secondCard.value) {
+        level.cards[level.firstCard].value === level.cards[level.secondCard].value) {
 
-        level.firstCard.matched = true;
-        level.secondCard.matched = true;
+        level.cards[level.firstCard].matched = true;
+        level.cards[level.secondCard].matched = true;
         level.matchedPairs++;
 
         if (level.matchedPairs >= 18) {
             level.shouldContinueFn = () => false;
-            alert("Level completed!");
+            level.showPopup("Level completed!");
             level.ctx.drawImage(frogglitchImage, 800, 400, 300, 300);
         }
-    } else if (level.firstCard && level.secondCard) {
-        level.firstCard.revealed = false;
-        level.secondCard.revealed = false;
     }
-    level.firstCard = null;
-    level.secondCard = null;
 }
-
-
     
     // const frogGif = document.createElement('img');
     //  frogGif.src = frogImage.src;

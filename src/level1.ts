@@ -65,6 +65,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     const plants = loadImage(plantsUrl);
     const tree = loadImage(treeUrl);
 
+    // TODO move gifs to entitites and animationsprites
     level1.treeGif.src = tree.src;
     level1.treeGif.style.position = 'absolute';
     level1.treeGif.style.left = '0px';
@@ -300,9 +301,6 @@ function update(level: Level1) {
 function shouldContinue(level: Level1): boolean {
     if (level.score.get() >= 30) {
         level.showPopup("Thanks for the help, human. I am full and I would like to dip my feet in some water.");
-
-        cleanUp(level);
-        level.startNextLevel();
         return false;
     }
 
