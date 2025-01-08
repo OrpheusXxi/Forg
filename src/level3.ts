@@ -74,7 +74,7 @@ class Card implements Entity {
 
     render(ctx: CanvasRenderingContext2D, dt: number): void {
         if (this.revealed || this.matched) {
-            flowerImages[this.value].render(ctx, dt, this.x, this.y, this.width, this.height);
+            flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x, this.y, this.width, this.height);
         } else {
             plainboxImage.render(ctx, dt, this.x, this.y, this.width, this.height);
         }
