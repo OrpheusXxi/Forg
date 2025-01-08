@@ -163,7 +163,8 @@ h1 {
     top: 0;
     left: 0;
     background-color: black;
-    background-image: url(./assets/images/mainscreen.jpeg);
+    background-image: url(./assets/images/mainmenuNew.png);
+    background-repeat: no-repeat;
 }
 
 text {

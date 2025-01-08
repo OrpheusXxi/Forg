@@ -40,7 +40,7 @@ playBtn!.addEventListener('click', () => {
 });
 
 // Stub for credits
-creditsBtn!.addEventListener('click', () => alert("Created by Your Name"));
+creditsBtn!.addEventListener('click', () => showPopup("Created by Your Name"));
 
 
 function showCutscene() {
