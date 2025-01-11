@@ -174,8 +174,7 @@ class Trash implements Entity {
 }
 
 export function start(gameState: GameState, startNextLevel: () => void): void {
-    if (!gameState.audioMuted)
-        bgMusic.play();
+    if (!gameState.audioMuted) bgMusic.play();
 
     const level2: Level2 = {
         ...gameState,
@@ -195,7 +194,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
         glitch: false,
         keyPressed: new Map([["ArrowUp", KeyState.NotPressed], ["ArrowDown", KeyState.NotPressed], ["ArrowLeft", KeyState.NotPressed], ["ArrowRight", KeyState.NotPressed]]),
     };
-    //level2.glitch_video.src = "";
+    level2.glitch_video.src = "assets/gifs/rivervid-0000.avi";
     level2.glitch_video.loop = true;
     level2.trashCollected.subscribe((number) => {
         if (number === 13) {
@@ -203,8 +202,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
             level2.glitch_video.play();
         }
     })
-    // when you want to play it
-    // level2.glitch_video.play(); 
+    
 
     // TODO move this into a score subscriber
     // alá level1:117-129
@@ -283,6 +281,9 @@ function checkCollision(level: Level2, item: Entity) {
 }
 
 function update(level: Level2, dt: number) {
+    if (level.frog.y + level.frog.height >= 1080) {
+        resetFrog(level);
+    }
     level.frog.update(level, dt);
 
     // Move islands

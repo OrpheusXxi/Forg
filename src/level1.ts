@@ -25,9 +25,20 @@ const frogRightImage = new StaticSprite(loadImage(frogRightUrl));
 //     {img: loadImage(frogRightUrl), duration: 100},
 // ]);
 
-import frogGlitchUrl from "./assets/gifs/frogGlitch.gif";
+import frog_glitch_f1 from "./assets/gifs/frog_glitch_anim/IMG_2885.png";
+import frog_glitch_f2 from "./assets/gifs/frog_glitch_anim/IMG_2888.png";
+import frog_glitch_f3 from "./assets/gifs/frog_glitch_anim/IMG_2889.png";
+import frog_glitch_f4 from "./assets/gifs/frog_glitch_anim/IMG_2890.png";
+import frog_glitch_f5 from "./assets/gifs/frog_glitch_anim/IMG_2891.png";
+import frog_glitch_f6 from "./assets/gifs/frog_glitch_anim/IMG_2892.png";
+
 const frogGlitchImage = new AnimatedSprite([
-    {img: loadImage(frogGlitchUrl), duration: 100},
+    {img: loadImage(frog_glitch_f1), duration: 100},
+    {img: loadImage(frog_glitch_f2), duration: 100},
+    {img: loadImage(frog_glitch_f3), duration: 100},
+    {img: loadImage(frog_glitch_f4), duration: 100},
+    {img: loadImage(frog_glitch_f5), duration: 100},
+    {img: loadImage(frog_glitch_f6), duration: 100},
 ]);
 
 export function start(gameState: GameState, startNextLevel: () => void) {
@@ -107,7 +118,10 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 
 
     level1.score.subscribe((score) => {
-        if (score === 5) {
+        if (score === 0) {
+            level1.showPopup("Hello! I am a Poison dart frog. I am very hungry and I need your help to catch some insects. I will eat them and you will get to know more about me.");
+        } 
+        else if (score === 5) {
             level1.showPopup("Yum! The insects I just ate are mostly very toxic, that’s where I got my coloring from a long, long time ago. Oh and also many species of frogs from my family, Dendrobatidae, are highly toxic themselves because of their diet.");
         } else if (score === 10) {
             level1.showPopup("The chemicals that me and my fellow frogs produce are called alkaloids and they are secreted from my skin. These alkaloids can be used as muscle relaxants, heart stimulants, appetite suppressants and they can also kill people!");
@@ -130,9 +144,9 @@ const frogSprites: Map<Direction, Sprite> = new Map([
     ["static", frogStaticImage as Sprite], // typechecking workaround
     ["left", frogLeftImage],
     ["right", frogRightImage],
-    //["glitch", new AnimatedSprite([])],
+    ["glitch", frogGlitchImage as Sprite], 
 ]);
-type Direction = "static" | "left" | "right"// | "glitch";
+type Direction = "static" | "left" | "right" | "glitch";
 class Frog implements Entity {
     x: number;
     y: number;

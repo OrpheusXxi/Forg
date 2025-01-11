@@ -4,7 +4,7 @@ import {start as level2Start} from './level2';
 import {start as level3Start} from './level3';
 
 const levels = [
-    //level1Start,
+    level1Start,
     level2Start,
     level3Start,
 ];
@@ -29,7 +29,7 @@ const gameState: GameState = {
 
 muteBtn!.addEventListener('click', () => {
     gameState.audioMuted = !gameState.audioMuted;
-    muteBtn!.textContent = gameState.audioMuted ? "Unmute" : "Mute";
+    muteBtn!.textContent = gameState.audioMuted ? 'Unmute' : 'Mute';
 });
 
 playBtn!.addEventListener('click', () => {
@@ -40,7 +40,7 @@ playBtn!.addEventListener('click', () => {
 });
 
 // Stub for credits
-creditsBtn!.addEventListener('click', () => showPopup("Created by Your Name"));
+creditsBtn!.addEventListener('click', () => showPopup("Created by Vik Kovbasjuk, 2025 with the support of VOŠ Václava Hollara"));
 
 
 function showCutscene() {
