@@ -79,13 +79,13 @@ class Frog implements Entity {
 
     update(level: Level2, dt: number) {
         const colliding_island = level.islands.find(island => {
-            const collinsion = (
-                (this.y + this.height) - island.y < 0.001 &&
+            const collision = (
+                (this.y + this.height) >= island.y &&
+                (this.y + this.height) <= (island.y + island.height) &&
                 this.x + this.width > island.x &&
                 this.x < island.x + island.width
             );
-            return collinsion;
-            
+            return collision;
         });
 
         if (colliding_island !== undefined) {
