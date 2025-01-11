@@ -8,10 +8,6 @@ import borderUrl from "./assets/images/level2-border.png";
 const border = loadImage(borderUrl)
 import border2Url from './assets/images/level2-border2.png';
 const border2 = loadImage(border2Url)
-/*import islandsUrl from "./assets/images/level2-islandsMain.png";
-const islandsImage = loadImage(islandsUrl);
-import islands2Url from "./assets/images/level2-islands1.png";
-const islands2Image = loadImage(islands2Url)*/
 
 import bgrUrl from "./assets/images/level2-bgr.png";
 const bgr = loadImage(bgrUrl)
@@ -177,6 +173,7 @@ class Trash implements Entity {
     height: number;
     collected: boolean;
     trash_type: number;
+    island?: Island;
 
     constructor(x: number, y: number, width: number, height: number, trash_type: number) {
         this.x = x;
@@ -185,6 +182,14 @@ class Trash implements Entity {
         this.height = height;
         this.collected = false;
         this.trash_type = trash_type;
+    }
+
+    update() {
+        if (this.island) {
+            // Update trash position based on island position
+            this.x = this.island.x + this.island.width / 2 - this.width / 2;
+            this.y = this.island.y - this.height;
+        }
     }
 
     render(ctx: CanvasRenderingContext2D, dt: number): void {
@@ -240,7 +245,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
     }});
 
     // Create islands and trash
-    for (let i = 0; i < 13; i++) {
+    /*for (let i = 0; i < 13; i++) {
         const randomType = Math.floor(Math.random() * islandsImages.length);
         level2.islands.push(
             new Island(i * 150 + Math.random() * 100, 200 + Math.random() * 600,
@@ -248,7 +253,36 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
         level2.trash.push(
             new Trash(i * 150 + Math.random() * 100, 200 + Math.random() * 600,
                 60, 60, i % trashImages.length));
-    }
+    }*/
+
+    // Create islands and trash
+for (let i = 0; i < 13; i++) {
+    const randomType = Math.floor(Math.random() * islandsImages.length); // Random type for island
+    const island = new Island(
+        i * 150 + Math.random() * 100, // Random x-position
+        200 + Math.random() * 600,    // Random y-position
+        150,                          // Width
+        30,                           // Height
+        Math.random() > 0.5 ? 1 : -1, // Random direction
+        randomType                    // Island type
+    );
+
+    level2.islands.push(island);
+
+    // Create trash linked to this island
+    const trash = new Trash(
+        island.x + island.width / 2 - 30, // Center trash on the island
+        island.y - 60,                   // Position trash slightly above the island
+        60,                              // Width of trash
+        60,                              // Height of trash
+        i % trashImages.length           // Random trash type
+    );
+
+    // Store the linked island in the trash object
+    trash.island = island;
+
+    level2.trash.push(trash);
+}
 
     console.log(level2.islands)
 
@@ -315,6 +349,8 @@ function update(level: Level2, dt: number) {
             island.dx *= -1; // Reverse direction
         }
     });
+
+    level.trash.forEach(trash => trash.update());
 
     // Check for trash collection
     level.trash.forEach(item => {
