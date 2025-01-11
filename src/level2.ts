@@ -326,7 +326,7 @@ function draw(level: Level2, dt: number) {
 
     // Score
     level.ctx.fillStyle = "black";
-    level.ctx.font = "30px Arial";
+    level.ctx.font = "30px lores-12";
     level.ctx.fillText(`Trash Collected: ${level.trashCollected.get()}/13`, 20, 50);
 }
 

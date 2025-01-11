@@ -1,4 +1,4 @@
-import { Entity, GameState, StaticSprite, Level, loadImage, loop } from "./common";
+import { Entity, GameState, StaticSprite, Level, loadImage, loop, AnimatedSprite } from "./common";
 
 // flowerImages: HTMLImageElement[],
 // plainboxImage: HTMLImageElement,
@@ -33,9 +33,21 @@ import frogglitchUrl from './assets/gifs/frogglitch.gif';
 import treesUrl from './assets/gifs/level3-trees.gif';
 import bgMusicUrl from './assets/sounds/Le Marigold - Aaraam.mp3?url';  
 
+/*import trees_f1 from './assets/gifs/trees3_anim/Layer 1.png';
+import trees_f2 from './assets/gifs/trees3_anim/Layer 5.png';
+import trees_f3 from './assets/gifs/trees3_anim/Layer 9.png';
+import trees_f4 from './assets/gifs/trees3_anim/Layer 13.png';
+
+const treesImage = new AnimatedSprite([
+    {img: loadImage(trees_f1), duration: 1000},
+    {img: loadImage(trees_f2), duration: 1000},
+    {img: loadImage(trees_f3), duration: 1000},
+    {img: loadImage(trees_f4), duration: 1000},
+])*/
+
 const flowerImages = [ loadImage(flower1Url), loadImage(flower2Url), loadImage(flower3Url), loadImage(flower4Url), loadImage(flower5Url), loadImage(flower6Url), loadImage(flower7Url), loadImage(flower8Url), loadImage(flower9Url), loadImage(flower10Url), loadImage(flower11Url), loadImage(flower12Url), loadImage(flower13Url), loadImage(flower14Url), loadImage(flower15Url), loadImage(flower16Url), loadImage(flower17Url), loadImage(flower18Url) ].map(img => new StaticSprite(img));
-const plainboxImage = new StaticSprite(loadImage(plainboxUrl));
-const acorn1Image = loadImage(acorn1Url);
+const plainboxImage = loadImage(plainboxUrl);
+const acorn1Image = new StaticSprite (loadImage(acorn1Url));
 const frogImage = loadImage(frogUrl);
 const frogglitchImage = loadImage(frogglitchUrl);
 const treesImage = loadImage(treesUrl);
@@ -78,7 +90,7 @@ class Card implements Entity {
         if (this.revealed || this.matched) {
             flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x, this.y, this.width, this.height);
         } else {
-            plainboxImage.render(ctx, dt, this.x, this.y, this.width, this.height);
+            acorn1Image.render(ctx, dt, this.x, this.y, this.width, this.height);
         }
     }
 }
@@ -114,16 +126,23 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 
     if (!level3.audioMuted) bgMusic.play();
 
+    /*const treesGif = document.createElement('img');
+    treesGif.src = treesImage.src;
+    treesGif.style.position = 'absolute';
+    treesGif.style.left = '0px';
+    treesGif.style.top = '0px';
+    treesGif.style.width = 'auto';
+    treesGif.style.height = 'auto';
+    document.body.appendChild(treesGif);*/
+
     // Initialize cards
     let allCards = new Array(36).fill(0).map((_, i) => i % 18);
     allCards = shuffleArray(allCards);
     console.log(allCards);
 
     allCards.forEach((value, i) => {
-        // 6 cards per row, 6 rows
-        // first x, then y, then width, then height
         level3.cards.push(
-            new Card((i % 6) * 300 + 100, Math.floor(i / 6) * 200 + 50, 100, 100, value, i));
+            new Card((i % 6) * 110 + 591, Math.floor(i / 6) * 110 + 169, 190, 190, value, i));
     });
 
     level3.click = (e: MouseEvent) => {
@@ -141,11 +160,12 @@ function draw(level: Level3, dt: number) {
     // Draw the level
     level.ctx.clearRect(0, 0, 1920, 1080);
     level.ctx.drawImage(treesImage, 0, 0, 1920, 1080);
+    level.ctx.drawImage(plainboxImage, 591, 169, 740, 740);
 
     level.cards.forEach(card => card.render(level.ctx, dt));
 
     level.ctx.fillStyle = "black";
-    level.ctx.font = "30px Arial";
+    level.ctx.font = "30px lores-12";
     level.ctx.fillText(`Time: ${level.timer}s`, 20, 50);
     level.ctx.fillText(`Matches: ${level.matchedPairs}/13`, 20, 100);
 }
@@ -232,12 +252,3 @@ function checkMatch(level: Level3) {
     //  frogGif.style.width = `${frog.width}px`;
     //  frogGif.style.height = `${frog.height}px`;
     //  document.body.appendChild(frogGif);
-
-    // const treesGif = document.createElement('img');
-    //  treesGif.src = trees.src;
-    //  treesGif.style.position = 'absolute';
-    //  treesGif.style.left = '0px';
-    //  treesGif.style.top = '0px';
-    //  treesGif.style.width = 'auto';
-    //  treesGif.style.height = 'auto';
-    //  document.body.appendChild(treesGif);
