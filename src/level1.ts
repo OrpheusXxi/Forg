@@ -25,6 +25,11 @@ const frogRightImage = new StaticSprite(loadImage(frogRightUrl));
 //     {img: loadImage(frogRightUrl), duration: 100},
 // ]);
 
+import frogGlitchUrl from "./assets/gifs/frogGlitch.gif";
+const frogGlitchImage = new AnimatedSprite([
+    {img: loadImage(frogGlitchUrl), duration: 100},
+]);
+
 export function start(gameState: GameState, startNextLevel: () => void) {
     const level1: Level1 = {
         ...gameState,
@@ -47,19 +52,6 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     level1.canvas.className = 'level1';
 
     if (!gameState.audioMuted) bgMusic.play();
-
-    // Add GIF elements dynamically
-
-
-    //  const frogGif = document.createElement('img');
-    //  frogGif.src = frogImage.src;
-    //  frogGif.style.position = 'absolute';
-    //  frogGif.style.left = `${frog.x}px`;
-    //  frogGif.style.top = `${frog.y}px`;
-    //  frogGif.style.width = `${frog.width}px`;
-    //  frogGif.style.height = `${frog.height}px`;
-    //  frogGif.style.zIndex = "4";
-    //  document.body.appendChild(frogGif);
 
     const waterfall = loadImage(watefallUrl);
     const plants = loadImage(plantsUrl);
