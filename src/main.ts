@@ -63,6 +63,32 @@ function startNextLevel() {
 }
 
 function showPopup(message: string): void {
-    alert(message)
+    const popup = document.createElement('div');
+    /*popup.style.position = 'absolute';
+    popup.style.top = '50%';
+    popup.style.left = '50%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.padding = '20px';
+    popup.style.backgroundColor = 'white';
+    popup.style.border = '2px solid black';
+    popup.style.zIndex = '1000';
+    popup.style.display = 'none'; */
+
+    const popupMessage = document.createElement('p');
+    popupMessage.textContent = message;
+    popup.appendChild(popupMessage);
+
+    const resumeButton = document.createElement('button');
+    resumeButton.textContent = 'Resume';
+    resumeButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+        gameState.paused = false;
+    });
+    popup.appendChild(resumeButton);
+
+    document.body.appendChild(popup);
+
+    gameState.paused = true;
+    popup.style.display = 'block';
     // TODO
 }
