@@ -117,11 +117,9 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     document.addEventListener('keyup', level1.keyup);
 
 
+
     level1.score.subscribe((score) => {
-        if (score === 0) {
-            level1.showPopup("Hello! I am a Poison dart frog. I am very hungry and I need your help to catch some insects. I will eat them and you will get to know more about me.");
-        } 
-        else if (score === 5) {
+        if (score === 5) {
             level1.showPopup("Yum! The insects I just ate are mostly very toxic, that’s where I got my coloring from a long, long time ago. Oh and also many species of frogs from my family, Dendrobatidae, are highly toxic themselves because of their diet.");
         } else if (score === 10) {
             level1.showPopup("The chemicals that me and my fellow frogs produce are called alkaloids and they are secreted from my skin. These alkaloids can be used as muscle relaxants, heart stimulants, appetite suppressants and they can also kill people!");
@@ -133,6 +131,8 @@ export function start(gameState: GameState, startNextLevel: () => void) {
             level1.showPopup("But I was a beast as a small tadpole as well. In order to grow big and live longer than the usual one to three years, I had to eat my siblings. Well, not all of them… But they tasted pretty good!");
         }
     });
+
+    level1.showPopup("Hello! I am a Poison dart frog. I am very hungry and I need your help to catch some insects. I will eat them and you will get to know more about me. Around me you can see my rainforest. Beautiful, isn’t it? It’s also a home for all my favorite food, like ants, spiders, mites, larvae and other insects. Please help me catch my food and maybe I'll tell you something more about myself.");
 
     setInterval(() => spawnItem(level1), 1000);
 

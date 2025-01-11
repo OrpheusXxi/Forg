@@ -4,7 +4,7 @@ import {start as level2Start} from './level2';
 import {start as level3Start} from './level3';
 
 const levels = [
-    level1Start,
+    //level1Start,
     level2Start,
     level3Start,
 ];
@@ -64,15 +64,8 @@ function startNextLevel() {
 
 function showPopup(message: string): void {
     const popup = document.createElement('div');
-    /*popup.style.position = 'absolute';
-    popup.style.top = '50%';
-    popup.style.left = '50%';
-    popup.style.transform = 'translate(-50%, -50%)';
-    popup.style.padding = '20px';
-    popup.style.backgroundColor = 'white';
-    popup.style.border = '2px solid black';
-    popup.style.zIndex = '1000';
-    popup.style.display = 'none'; */
+    popup.className = 'popup';
+    
 
     const popupMessage = document.createElement('p');
     popupMessage.textContent = message;
@@ -90,5 +83,4 @@ function showPopup(message: string): void {
 
     gameState.paused = true;
     popup.style.display = 'block';
-    // TODO
 }

@@ -97,7 +97,7 @@ class Frog implements Entity {
             this.y = 1080 - this.height;
             this.is_on_island = true;
         } else {
-            this.is_on_island = false;
+            this.is_on_island = false; 
         }
         // level2.frog.y -= 50;
         // level2.frog.y += 50;
@@ -124,6 +124,7 @@ class Frog implements Entity {
     render(ctx: CanvasRenderingContext2D, dt: number): void {
         frogImage.render(ctx, dt, this.x, this.y, this.width, this.height);
     }
+
 }
 
 class Island implements Entity {
@@ -211,9 +212,13 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
     //     level.showPopup(`Educational message for trash piece #${level.trashCollected}`);
     //     level.paused = false;
     // }
+
     level2.trashCollected.subscribe((number) => {
-        // here
-    });
+        if (number === 1) {
+            level2.showPopup("Yum! The insects I just ate are mostly very toxic, that’s where I got my coloring from a long, long time ago. Oh and also many species of frogs from my family, Dendrobatidae, are highly toxic themselves because of their diet.");
+        } else if (number === 4) {
+            level2.showPopup("The chemicals that me and my fellow frogs produce are called alkaloids and they are secreted from my skin. These alkaloids can be used as muscle relaxants, heart stimulants, appetite suppressants and they can also kill people!");
+    }});
 
     // Create islands and trash
     for (let i = 0; i < 13; i++) {
@@ -281,9 +286,6 @@ function checkCollision(level: Level2, item: Entity) {
 }
 
 function update(level: Level2, dt: number) {
-    if (level.frog.y + level.frog.height >= 1080) {
-        resetFrog(level);
-    }
     level.frog.update(level, dt);
 
     // Move islands
