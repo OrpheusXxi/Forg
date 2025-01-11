@@ -48,7 +48,6 @@ interface Level2 extends Level {
     keyPressed: Map<"ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight", KeyState>,
 }
 
-
 class Frog implements Entity {
     x: number;
     y: number;
@@ -67,8 +66,19 @@ class Frog implements Entity {
         this.height = height;
     }
 
+    isFrogOnIsland(frog: Frog, islands: Island[]): boolean {
+        return islands.some(island => {
+            const collision = (
+                (frog.y + frog.height) - island.y < 0.001 &&
+                frog.x + frog.width > island.x &&
+                frog.x < island.x + island.width
+            );
+            return collision;
+        });
+    }
+
     update(level: Level2, dt: number) {
-        const colliding_island = level.islands.filter(island => {
+        const colliding_island = level.islands.find(island => {
             const collinsion = (
                 (this.y + this.height) - island.y < 0.001 &&
                 this.x + this.width > island.x &&
@@ -76,7 +86,8 @@ class Frog implements Entity {
             );
             return collinsion;
             
-        }).at(0);
+        });
+
         if (colliding_island !== undefined) {
             this.dy = 0;
             this.y = colliding_island.y - this.height;
