@@ -239,10 +239,16 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
 
     level2.trashCollected.subscribe((number) => {
         if (number === 1) {
-            level2.showPopup("Yum! The insects I just ate are mostly very toxic, that’s where I got my coloring from a long, long time ago. Oh and also many species of frogs from my family, Dendrobatidae, are highly toxic themselves because of their diet.");
+            level2.showPopup("Nice job! But really be careful about the river. Due to climate change, amphibian chytrid fungus, a kind of parasitic mushroom, is causing many of the species from my family to go extinct.");
         } else if (number === 4) {
-            level2.showPopup("The chemicals that me and my fellow frogs produce are called alkaloids and they are secreted from my skin. These alkaloids can be used as muscle relaxants, heart stimulants, appetite suppressants and they can also kill people!");
+            level2.showPopup("Also, the river is poisoned by mercury in many places as it is leaked from gold mines around Amazon that are using mercury for gold purification.");
+        } else if (number === 9) {
+            level2.showPopup("People’s trash is not helping the situation at all, as you can see. Many South American countries, like Brazil, where I live, suffer from inequality. Therefore many people don’t have access to a proper sewage or trash system and the river is the only place where their trash goes.");
+        } else if (number === 13) {
+            level2.showPopup("Congratulations! You have collected all the trash. Now you can see the river in its full beauty. But remember, the river is still in danger. You can help by spreading the word about the importance of clean water and by supporting organizations that help to protect the Amazon river. Now come with me, I'll show you another part of the forest.");
     }});
+
+    level2.showPopup("Look at this! This is my home, the Amazon river and its surroundings, the Amazon rainforest! But it’s very dirty as of late. Help me collect the trash that is polluting the river. Use the arrow keys to move me around. Let's go!");
 
     // Create islands and trash
     /*for (let i = 0; i < 13; i++) {

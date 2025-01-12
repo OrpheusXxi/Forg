@@ -235,7 +235,8 @@ interface Level1 extends Level {
 }
 
 function cleanUp(level: Level1) {
-    //frogGif.remove();
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
     level.treeGif.remove();
     level.waterfallGif.remove();
     level.plantsGif.remove();

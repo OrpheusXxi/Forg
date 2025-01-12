@@ -4,8 +4,8 @@ import {start as level2Start} from './level2';
 import {start as level3Start} from './level3';
 
 const levels = [
-    //level1Start,
-    //level2Start,
+    level1Start,
+    level2Start,
     level3Start,
 ];
 
