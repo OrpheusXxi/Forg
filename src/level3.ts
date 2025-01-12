@@ -88,9 +88,9 @@ class Card implements Entity {
 
     render(ctx: CanvasRenderingContext2D, dt: number): void {
         if (this.revealed || this.matched) {
-            flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x, this.y, this.width, this.height);
+            flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x, this.y, 90, 90);
         } else {
-            acorn1Image.render(ctx, dt, this.x, this.y, this.width, this.height);
+            acorn1Image.render(ctx, dt, this.x, this.y, 190, 190);
         }
     }
 }
@@ -167,20 +167,14 @@ function draw(level: Level3, dt: number) {
     level.ctx.fillStyle = "black";
     level.ctx.font = "30px lores-12";
     level.ctx.fillText(`Time: ${level.timer}s`, 20, 50);
-    level.ctx.fillText(`Matches: ${level.matchedPairs}/13`, 20, 100);
+    level.ctx.fillText(`Matches: ${level.matchedPairs}/18`, 20, 100);
 }
 
 function update(level: Level3, dt: number) {
     // Update the level
     if (level.timer <= 0) {
         clearInterval(level.interval);
-        level.showPopup("Time's up! Restarting level.");
-
-        // restart the level by the basic mechanism
-        // of overriding the startNextLevel function
-        const nextLevel = level.startNextLevel;
-        level.startNextLevel = () => start(level, nextLevel);
-        level.shouldContinueFn = () => false;
+        resetLevel(level);
     }
 
     level.interval -= dt;
@@ -188,6 +182,20 @@ function update(level: Level3, dt: number) {
         level.timer--;
         level.interval = 1000;
     }
+}
+
+
+function resetLevel(level: Level3) { 
+    level.timer = 120; // Reset timer
+    level.cards.forEach(card => {
+        card.revealed = false;
+        card.matched = false;
+    });
+    level.matchedPairs = 0;
+    level.firstCard = null;
+    level.secondCard = null;
+    level.shouldContinueFn = () => true;
+    level.showPopup("Time's up! Restarting level.");
 }
 
 function cleanUp(level: Level3) {
@@ -236,11 +244,26 @@ function checkMatch(level: Level3) {
         level.cards[level.secondCard].matched = true;
         level.matchedPairs++;
 
+        if (level.matchedPairs === 1) {
+            level.showPopup("Great! You found your first match!");
+        }
+
+
         if (level.matchedPairs >= 18) {
             level.shouldContinueFn = () => false;
             level.showPopup("Level completed!");
             level.ctx.drawImage(frogglitchImage, 800, 400, 300, 300);
         }
+        /*level.firstCard = null;
+        level.secondCard = null;
+    }
+    else {
+        setTimeout(() => {
+            if (level.firstCard !== null) level.cards[level.firstCard].revealed = false;
+            if (level.secondCard !== null) level.cards[level.secondCard].revealed = false;
+            level.firstCard = null;
+            level.secondCard = null;
+        }, 1000);*/
     }
 }
     
