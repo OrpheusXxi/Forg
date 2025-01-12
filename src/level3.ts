@@ -254,17 +254,9 @@ function checkMatch(level: Level3) {
             level.showPopup("Level completed!");
             level.ctx.drawImage(frogglitchImage, 800, 400, 300, 300);
         }
-        /*level.firstCard = null;
-        level.secondCard = null;
-    }
-    else {
-        setTimeout(() => {
-            if (level.firstCard !== null) level.cards[level.firstCard].revealed = false;
-            if (level.secondCard !== null) level.cards[level.secondCard].revealed = false;
-            level.firstCard = null;
-            level.secondCard = null;
-        }, 1000);*/
-    }
+
+        level.showPopup("Welcome to the jungle! Oh wait, where are all the trees and other plants? Let's fix that by repopulating the forest with beautiful plants again. Click on the acorns to reveal the flowers and match them. You have 120 seconds to complete the level. Good luck!");
+       }
 }
     
     // const frogGif = document.createElement('img');
