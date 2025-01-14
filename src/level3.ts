@@ -54,11 +54,14 @@ const treesImage = loadImage(treesUrl);
 const bgMusic = new Audio(bgMusicUrl);
 bgMusic.loop = true;
 
+var card1Number = 0;
+var card2Number = 0;
+
 interface Level3 extends Level {
 
     cards: Card[],
-    firstCard: number | null,
-    secondCard: number | null,
+    firstCard: Card | null,
+    secondCard: Card | null,
     matchedPairs: number,
     timer: number,
     interval: number,
@@ -207,10 +210,10 @@ function cleanUp(level: Level3) {
 }
 
 function handleClick(level: Level3, x: number, y: number) {
-    console.log("Clicked!", x, y, level.firstCard, level.secondCard);
+   
     if (level.firstCard && level.secondCard) {
-        level.cards[level.firstCard].revealed = false;
-        level.cards[level.secondCard].revealed = false;
+        level.firstCard.revealed = false;
+        level.secondCard.revealed = false;
         level.firstCard = null;
         level.secondCard = null;
     }
@@ -229,19 +232,21 @@ function handleClick(level: Level3, x: number, y: number) {
     clickedCard.revealed = true;
 
     if (!level.firstCard) {
-        level.firstCard = clickedCard.index;
+        level.firstCard = clickedCard;
+        card1Number = clickedCard.value;
     } else {
-        level.secondCard = clickedCard.index;
+        level.secondCard = clickedCard;
+        card2Number = clickedCard.value;
         checkMatch(level);
     }
+    console.log("Clicked!", x, y, level.firstCard, level.secondCard, clickedCard.index);
+
 }
 
 function checkMatch(level: Level3) {
-    if (level.firstCard && level.secondCard &&
-        level.cards[level.firstCard].value === level.cards[level.secondCard].value) {
-
-        level.cards[level.firstCard].matched = true;
-        level.cards[level.secondCard].matched = true;
+    if (level.firstCard && level.secondCard && card1Number === card2Number) {
+        level.firstCard.matched = true;
+        level.secondCard.matched = true;
         level.matchedPairs++;
 
         if (level.matchedPairs === 1) {

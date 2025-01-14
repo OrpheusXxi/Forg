@@ -211,3 +211,7 @@ canvas {
     padding: 20px;
     z-index: 100;
 }
+
+.score {
+    z-index: 100;
+}
