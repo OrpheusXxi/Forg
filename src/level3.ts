@@ -8,26 +8,26 @@ import { Entity, GameState, StaticSprite, Level, loadImage, loop, AnimatedSprite
 // treesImage: HTMLImageElement,
 // bgMusic: HTMLAudioElement,
 
-import flower1Url from './assets/images/level3_flower1.png';
-import flower2Url from './assets/images/level3_flower2.png';
-import flower3Url from './assets/images/level3_flower3.png';
-import flower4Url from './assets/images/level3_flower4.png';
-import flower5Url from './assets/images/level3_flower5.png';
-import flower6Url from './assets/images/level3_flower6.png';
-import flower7Url from './assets/images/level3_flower7.png';
-import flower8Url from './assets/images/level3_flower8.png';
-import flower9Url from './assets/images/level3_flower9.png';
-import flower10Url from './assets/images/level3_flower10.png';
-import flower11Url from './assets/images/level3_flower11.png';
-import flower12Url from './assets/images/level3_flower12.png';
-import flower13Url from './assets/images/level3_flower13.png';
-import flower14Url from './assets/images/level3_flower14.png';
-import flower15Url from './assets/images/level3_flower15.png';
-import flower16Url from './assets/images/level3_flower16.png';
-import flower17Url from './assets/images/level3_flower17.png';
-import flower18Url from './assets/images/level3_flower18.png';
-import plainboxUrl from './assets/images/level3_plainbox.png';
-import acorn1Url from './assets/images/level3_acorn1.png';
+import flower1Url from './assets/images/flower1.png';
+import flower2Url from './assets/images/flower2.png';
+import flower3Url from './assets/images/flower3.png';
+import flower4Url from './assets/images/flower4.png';
+import flower5Url from './assets/images/flower5.png';
+import flower6Url from './assets/images/flower6.png';
+import flower7Url from './assets/images/flower7.png';
+import flower8Url from './assets/images/flower8.png';
+import flower9Url from './assets/images/flower9.png';
+import flower10Url from './assets/images/flower10.png';
+import flower11Url from './assets/images/flower11.png';
+import flower12Url from './assets/images/flower12.png';
+import flower13Url from './assets/images/flower13.png';
+import flower14Url from './assets/images/flower14.png';
+import flower15Url from './assets/images/flower15.png';
+import flower16Url from './assets/images/flower16.png';
+import flower17Url from './assets/images/flower17.png';
+import flower18Url from './assets/images/flower18.png';
+import plainboxUrl from './assets/images/plainbox.png';
+import acorn1Url from './assets/images/acornMain.png';
 import frogUrl from './assets/gifs/frogblink.gif';
 import frogglitchUrl from './assets/gifs/frogglitch.gif';
 import treesUrl from './assets/gifs/level3-trees.gif';
@@ -91,9 +91,9 @@ class Card implements Entity {
 
     render(ctx: CanvasRenderingContext2D, dt: number): void {
         if (this.revealed || this.matched) {
-            flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x + 50, this.y + 50, 50, 50);
+            flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x, this.y, 96, 96);
         } else {
-            acorn1Image.render(ctx, dt, this.x, this.y, 190, 190);
+            acorn1Image.render(ctx, dt, this.x, this.y, 96, 96);
         }
     }
 }
@@ -146,7 +146,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 
     allCards.forEach((value, i) => {
         level3.cards.push(
-            new Card((i % 6) * 111 + 591, Math.floor(i / 6) * 111 + 169, 100, 100, value, i)); //TODO make acorns the same size as flowers
+            new Card((i % 6) * 111 + 591, Math.floor(i / 6) * 111 + 169, 96, 96, value, i)); //TODO make acorns the same size as flowers
     });
 
     level3.click = (e: MouseEvent) => {
