@@ -145,7 +145,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 
     allCards.forEach((value, i) => {
         level3.cards.push(
-            new Card((i % 6) * 110 + 591, Math.floor(i / 6) * 110 + 169, 190, 190, value, i));
+            new Card((i % 6) * 110 + 591, Math.floor(i / 6) * 110 + 169, 190, 190, value, i)); //TODO make acorns the same size as flowers
     });
 
     level3.click = (e: MouseEvent) => {
@@ -261,7 +261,9 @@ function checkMatch(level: Level3) {
         }
     }
 }
-    
+    // TODO: make the cutscene work + the glitches
+
+
     // const frogGif = document.createElement('img');
     //  frogGif.src = frogImage.src;
     //  frogGif.style.position = 'absolute';

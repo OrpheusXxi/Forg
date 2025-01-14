@@ -39,6 +39,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    margin-bottom: 0%;
     animation: glitch 3s steps(100) infinite;
 }
 
