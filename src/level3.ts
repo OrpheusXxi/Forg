@@ -91,7 +91,7 @@ class Card implements Entity {
 
     render(ctx: CanvasRenderingContext2D, dt: number): void {
         if (this.revealed || this.matched) {
-            flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x, this.y, 90, 90);
+            flowerImages[this.value % flowerImages.length].render(ctx, dt, this.x + 50, this.y + 50, 50, 50);
         } else {
             acorn1Image.render(ctx, dt, this.x, this.y, 190, 190);
         }
@@ -139,19 +139,20 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     document.body.appendChild(treesGif);*/
 
     // Initialize cards
+
     let allCards = new Array(36).fill(0).map((_, i) => i % 18);
     allCards = shuffleArray(allCards);
     console.log(allCards);
 
     allCards.forEach((value, i) => {
         level3.cards.push(
-            new Card((i % 6) * 110 + 591, Math.floor(i / 6) * 110 + 169, 190, 190, value, i)); //TODO make acorns the same size as flowers
+            new Card((i % 6) * 111 + 591, Math.floor(i / 6) * 111 + 169, 100, 100, value, i)); //TODO make acorns the same size as flowers
     });
 
     level3.click = (e: MouseEvent) => {
         const rect = level3.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
         handleClick(level3, x, y);
     };
     level3.canvas.addEventListener('click', level3.click);
