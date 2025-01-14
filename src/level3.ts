@@ -26,7 +26,7 @@ import flower15Url from './assets/images/flower15.png';
 import flower16Url from './assets/images/flower16.png';
 import flower17Url from './assets/images/flower17.png';
 import flower18Url from './assets/images/flower18.png';
-import plainboxUrl from './assets/images/plainbox.png';
+import plainboxUrl from './assets/images/level3_plainbox.png';
 import acorn1Url from './assets/images/acornMain.png';
 import frogUrl from './assets/gifs/frogblink.gif';
 import frogglitchUrl from './assets/gifs/frogglitch.gif';
@@ -146,7 +146,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 
     allCards.forEach((value, i) => {
         level3.cards.push(
-            new Card((i % 6) * 111 + 591, Math.floor(i / 6) * 111 + 169, 96, 96, value, i)); //TODO make acorns the same size as flowers
+            new Card((i % 6) * 110 + 640, Math.floor(i / 6) * 110 + 220, 96, 96, value, i)); //TODO make acorns the same size as flowers
     });
 
     level3.click = (e: MouseEvent) => {

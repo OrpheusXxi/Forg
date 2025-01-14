@@ -5,7 +5,7 @@ import {start as level3Start} from './level3';
 
 const levels = [
     //level1Start,
-    //level2Start,
+    level2Start,
     level3Start,
 ];
 

@@ -227,6 +227,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
             level2.glitch_video.play();
         }
     })
+    
 
     level2.trashCollected.subscribe((number) => {
         if (number === 1) {
@@ -341,6 +342,7 @@ function update(level: Level2, dt: number) {
     level.frog.update(level, dt);
 
     // Move islands
+    if (!level.paused) {
     level.islands.forEach(island => {
         island.x += island.dx;
         if (island.x <= 0 || island.x + island.width >= 1920) {
@@ -365,6 +367,10 @@ function update(level: Level2, dt: number) {
             level.keyPressed.set(key, KeyState.NotPressed);
         }
     })
+}
+else {
+    console.log("Level is paused")
+}
 }
 
 function resetFrog(level: Level2) {
