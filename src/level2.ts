@@ -204,7 +204,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
     const level2: Level2 = {
         ...gameState,
         startNextLevel: startNextLevel,
-        frog: new Frog(800, 950, 100, 100),
+        frog: new Frog(800, 950, 150, 150),
         islands: [],
         trash: [],
         paused: false,
@@ -227,15 +227,6 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
             level2.glitch_video.play();
         }
     })
-    
-
-    // TODO move this into a score subscriber
-    // alá level1:117-129
-    // if ([1, 4, 9, 13].includes(level.trashCollected.get())) {
-    //     level.paused = true;
-    //     level.showPopup(`Educational message for trash piece #${level.trashCollected}`);
-    //     level.paused = false;
-    // }
 
     level2.trashCollected.subscribe((number) => {
         if (number === 1) {
@@ -282,6 +273,7 @@ for (let i = 0; i < 13; i++) {
         60,                              // Width of trash
         60,                              // Height of trash
         i % trashImages.length           // Random trash type
+        
     );
 
     // Store the linked island in the trash object
