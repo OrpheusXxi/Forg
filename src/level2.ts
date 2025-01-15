@@ -1,4 +1,4 @@
-import { Entity, GameState, StaticSprite, Level, loadImage, loop, Score } from "./common";
+import { AnimatedSprite, Entity, GameState, StaticSprite, Level, loadImage, loop, Score } from "./common";
 
 import bgMusicUrl from "./assets/sounds/Wesly Thomas - Afternoon in Rio.mp3?url";
 const bgMusic = new Audio(bgMusicUrl);
@@ -40,6 +40,21 @@ const islandsImages = [
     islandUrl1, islandUrl2, islandUrl3, islandUrl4, islandUrl5, islandUrl6, islandUrl7, islandUrl8, islandUrl9, islandUrl10, islandUrl11,
 ].map(loadImage).map(img => new StaticSprite(img));
 
+import frog_glitch_f1 from "./assets/gifs/frog_glitch_anim/IMG_2885.png";
+import frog_glitch_f2 from "./assets/gifs/frog_glitch_anim/IMG_2888.png";
+import frog_glitch_f3 from "./assets/gifs/frog_glitch_anim/IMG_2889.png";
+import frog_glitch_f4 from "./assets/gifs/frog_glitch_anim/IMG_2890.png";
+import frog_glitch_f5 from "./assets/gifs/frog_glitch_anim/IMG_2891.png";
+import frog_glitch_f6 from "./assets/gifs/frog_glitch_anim/IMG_2892.png";
+
+const frogGlitchImage = new AnimatedSprite([
+    {img: loadImage(frog_glitch_f1), duration: 100},
+    {img: loadImage(frog_glitch_f2), duration: 100},
+    {img: loadImage(frog_glitch_f3), duration: 100},
+    {img: loadImage(frog_glitch_f4), duration: 100},
+    {img: loadImage(frog_glitch_f5), duration: 100},
+    {img: loadImage(frog_glitch_f6), duration: 100},
+]);
 
 enum KeyState {
     Up,
@@ -219,7 +234,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
         glitch: false,
         keyPressed: new Map([["ArrowUp", KeyState.NotPressed], ["ArrowDown", KeyState.NotPressed], ["ArrowLeft", KeyState.NotPressed], ["ArrowRight", KeyState.NotPressed]]),
     };
-    level2.glitch_video.src = "assets/gifs/rivervid-0000.avi";
+    level2.glitch_video.src = "assets/videos/rivervid-0000.mp4";
     level2.glitch_video.loop = true;
     level2.trashCollected.subscribe((number) => {
         if (number === 13) {
@@ -238,9 +253,10 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
             level2.showPopup("People’s trash is not helping the situation at all, as you can see. Many South American countries, like Brazil, where I live, suffer from inequality. Therefore many people don’t have access to a proper sewage or trash system and the river is the only place where their trash goes.");
         } else if (number === 13) {
             level2.showPopup("Congratulations! You have collected all the trash. Now you can see the river in its full beauty. But remember, the river is still in danger. You can help by spreading the word about the importance of clean water and by supporting organizations that help to protect the Amazon river. Now come with me, I'll show you another part of the forest.");
-    }});
+         } 
+    });
 
-    level2.showPopup("Look at this! This is my home, the Amazon river and its surroundings, the Amazon rainforest! But it’s very dirty as of late. Help me collect the trash that is polluting the river. Use the arrow keys to move me around. Let's go!");
+    level2.showPopup("Look at this! This is my home, the Amazon river and its surroundings, the Amazon rainforest! But it’s very dirty as of late. Help me collect the trash that is polluting the river. Use the arrow keys to move me around. Let's go!"); 
 
     // Create islands and trash
     /*for (let i = 0; i < 13; i++) {

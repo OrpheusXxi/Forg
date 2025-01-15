@@ -129,12 +129,14 @@ export function start(gameState: GameState, startNextLevel: () => void) {
             level1.showPopup("I look cute and welcoming, however I am quite the beast. Both males and females in our family fight for the attention of the other sex. And even after mating, the females try to scare away other females from their mate, as they want him to only look after their own children.");
         } else if (score === 25) {
             level1.showPopup("But I was a beast as a small tadpole as well. In order to grow big and live longer than the usual one to three years, I had to eat my siblings. Well, not all of them… But they tasted pretty good!");
-        }
+        } else if (score === 28) {
+                //Frog.direction("glitch");
+                level1.frog.turn('glitch');}
     });
 
     level1.showPopup("Hello! I am a Poison dart frog. I am very hungry and I need your help to catch some insects. I will eat them and you will get to know more about me. Around me you can see my rainforest. Beautiful, isn’t it? It’s also a home for all my favorite food, like ants, spiders, mites, larvae and other insects. Please help me catch my food and maybe I'll tell you something more about myself.");
 
-    setInterval(() => spawnItem(level1), 1000);
+    setInterval(() => spawnItem(level1), 1500);
 
     // start game loop
     loop(level1, 0);
@@ -276,16 +278,16 @@ function spawnItem(level: Level1) {
 
 function checkCollision(level: Level1, item: Entity) {
     return (
-        level.frog.x < item.x + 75 &&
+        level.frog.x < item.x + 5 &&
         level.frog.x + level.frog.width > item.x &&
-        level.frog.y < item.y + 75 &&
+        level.frog.y < item.y + 5 &&
         level.frog.y + level.frog.height > item.y
     );
 }
 
 function update(level: Level1) {
-    level.bugs.forEach(bug => bug.y += 3);
-    level.trash.forEach(trash => trash.y += 3);
+    level.bugs.forEach(bug => bug.y += 2);
+    level.trash.forEach(trash => trash.y += 2);
 
     level.bugs.forEach((bug, index) => {
         if (checkCollision(level, bug)) {

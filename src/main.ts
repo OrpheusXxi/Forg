@@ -4,7 +4,7 @@ import {start as level2Start} from './level2';
 import {start as level3Start} from './level3';
 
 const levels = [
-    //level1Start,
+    level1Start,
     level2Start,
     level3Start,
 ];
@@ -13,6 +13,12 @@ const canvas: HTMLCanvasElement = document.getElementById('gameCanvas') as HTMLC
 const ctx = canvas.getContext('2d')!;
 const mainMenu = document.getElementById('main-menu') as HTMLDivElement;
 const cutscene = document.getElementById('cutscene') as HTMLVideoElement;
+cutscene.style.position = 'absolute';
+cutscene.style.top = '0';
+cutscene.style.left = '0';
+cutscene.style.width = '100%';
+cutscene.style.height = '100%';
+cutscene.style.zIndex = '1000';
 const playBtn = document.getElementById('play-btn');
 const muteBtn = document.getElementById('mute-btn');
 const creditsBtn = document.getElementById('credits-btn');
@@ -46,9 +52,13 @@ creditsBtn!.addEventListener('click', () => showPopup("Created by Vik Kovbasjuk,
 function showCutscene() {
     canvas.style.display = 'none';
     cutscene.style.display = 'block';
-    cutscene.src = "./assets/videos/Untitled_Artwork.mp4";
     cutscene.play();
     cutscene.onended = () => {
+        cutscene.style.display = 'none';
+        mainMenu.style.display = 'flex';
+    };
+    cutscene.onerror = () => {
+        console.error("Error loading video. Please check the video format and path.");
         cutscene.style.display = 'none';
         mainMenu.style.display = 'flex';
     };

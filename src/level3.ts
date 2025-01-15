@@ -31,7 +31,23 @@ import acorn1Url from './assets/images/acornMain.png';
 import frogUrl from './assets/gifs/frogblink.gif';
 import frogglitchUrl from './assets/gifs/frogglitch.gif';
 import treesUrl from './assets/gifs/level3-trees.gif';
-import bgMusicUrl from './assets/sounds/Le Marigold - Aaraam.mp3?url';  
+import bgMusicUrl from './assets/sounds/Le Marigold - Aaraam.mp3?url'; 
+
+import frog_glitch_f1 from "./assets/gifs/frog_glitch_anim/IMG_2885.png";
+import frog_glitch_f2 from "./assets/gifs/frog_glitch_anim/IMG_2888.png";
+import frog_glitch_f3 from "./assets/gifs/frog_glitch_anim/IMG_2889.png";
+import frog_glitch_f4 from "./assets/gifs/frog_glitch_anim/IMG_2890.png";
+import frog_glitch_f5 from "./assets/gifs/frog_glitch_anim/IMG_2891.png";
+import frog_glitch_f6 from "./assets/gifs/frog_glitch_anim/IMG_2892.png";
+
+const frogGlitchImage = new AnimatedSprite([
+    {img: loadImage(frog_glitch_f1), duration: 100},
+    {img: loadImage(frog_glitch_f2), duration: 100},
+    {img: loadImage(frog_glitch_f3), duration: 100},
+    {img: loadImage(frog_glitch_f4), duration: 100},
+    {img: loadImage(frog_glitch_f5), duration: 100},
+    {img: loadImage(frog_glitch_f6), duration: 100},
+]);
 
 /*import trees_f1 from './assets/gifs/trees3_anim/Layer 1.png';
 import trees_f2 from './assets/gifs/trees3_anim/Layer 5.png';
