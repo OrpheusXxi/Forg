@@ -116,8 +116,6 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     document.addEventListener('keydown', level1.keydown);
     document.addEventListener('keyup', level1.keyup);
 
-
-
     level1.score.subscribe((score) => {
         if (score === 5) {
             level1.showPopup("Yum! The insects I just ate are mostly very toxic, that’s where I got my coloring from a long, long time ago. Oh and also many species of frogs from my family, Dendrobatidae, are highly toxic themselves because of their diet.");
@@ -129,9 +127,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
             level1.showPopup("I look cute and welcoming, however I am quite the beast. Both males and females in our family fight for the attention of the other sex. And even after mating, the females try to scare away other females from their mate, as they want him to only look after their own children.");
         } else if (score === 25) {
             level1.showPopup("But I was a beast as a small tadpole as well. In order to grow big and live longer than the usual one to three years, I had to eat my siblings. Well, not all of them… But they tasted pretty good!");
-        } else if (score === 28) {
-                //Frog.direction("glitch");
-                level1.frog.turn('glitch');}
+        } 
     });
 
     level1.showPopup("Hello! I am a Poison dart frog. I am very hungry and I need your help to catch some insects. I will eat them and you will get to know more about me. Around me you can see my rainforest. Beautiful, isn’t it? It’s also a home for all my favorite food, like ants, spiders, mites, larvae and other insects. Please help me catch my food and maybe I'll tell you something more about myself.");
