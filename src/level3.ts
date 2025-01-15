@@ -184,10 +184,10 @@ function draw(level: Level3, dt: number) {
 
     level.cards.forEach(card => card.render(level.ctx, dt));
 
-    level.ctx.fillStyle = "black";
+    level.ctx.fillStyle = "rgba(255, 208, 0)";
     level.ctx.font = "30px lores-12";
-    level.ctx.fillText(`Time: ${level.timer}s`, 20, 50);
-    level.ctx.fillText(`Matches: ${level.matchedPairs}/18`, 20, 100);
+    level.ctx.fillText(`Time: ${level.timer}s`, 1750, 50);
+    level.ctx.fillText(`Matches: ${level.matchedPairs}/18`, 1750, 100);
 }
 
 function update(level: Level3, dt: number) {

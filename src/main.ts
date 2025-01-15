@@ -82,6 +82,7 @@ function showPopup(message: string): void {
     popup.appendChild(popupMessage);
 
     const resumeButton = document.createElement('button');
+    resumeButton.className = 'resumeButton';
     resumeButton.textContent = 'Resume';
     resumeButton.addEventListener('click', () => {
         popup.style.display = 'none';

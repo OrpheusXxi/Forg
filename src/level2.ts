@@ -340,9 +340,9 @@ function draw(level: Level2, dt: number) {
     level.frog.render(level.ctx, dt);
 
     // Score
-    level.ctx.fillStyle = "black";
-    level.ctx.font = "30px lores-12";
-    level.ctx.fillText(`Trash Collected: ${level.trashCollected.get()}/13`, 20, 50);
+    level.ctx.fillStyle = "rgba(255, 208, 0)";
+    level.ctx.font = "35px lores-12";
+    level.ctx.fillText(`Trash Collected: ${level.trashCollected.get()}/13`, 1750, 50);
 }
 
 function checkCollision(level: Level2, item: Entity) {

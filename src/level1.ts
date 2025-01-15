@@ -11,19 +11,85 @@ bgMusic.loop = true;
 import frog_blink_anim_f1 from "./assets/gifs/frog_blink_anim/IMG_2885.png";
 import frog_blink_anim_f2 from "./assets/gifs/frog_blink_anim/IMG_2886.png";
 
-import frogLeftUrl from "./assets/gifs/frogLeft.gif";
-import frogRightUrl from "./assets/gifs/frogRight.gif";
 const frogStaticImage = new AnimatedSprite([
     {img: loadImage(frog_blink_anim_f1), duration: 3000},
     {img: loadImage(frog_blink_anim_f2), duration: 500},
 ]);
-const frogLeftImage = new StaticSprite(loadImage(frogLeftUrl));
-const frogRightImage = new StaticSprite(loadImage(frogRightUrl));
-// new AnimatedSprite([
-//     {img: loadImage(frogRightUrl), duration: 100},
-//     {img: loadImage(frogStaticUrl), duration: 100},
-//     {img: loadImage(frogRightUrl), duration: 100},
-// ]);
+
+import frogLefF1 from "./assets/gifs/frogLeft/IMG_2893.png";
+import frogLefF2 from "./assets/gifs/frogLeft/IMG_2894.png";
+import frogLefF3 from "./assets/gifs/frogLeft/IMG_2895.png";
+import frogLefF4 from "./assets/gifs/frogLeft/IMG_2896.png";
+import frogLefF5 from "./assets/gifs/frogLeft/IMG_2898.png";
+import frogLefF6 from "./assets/gifs/frogLeft/IMG_2899.png";
+import frogLefF7 from "./assets/gifs/frogLeft/IMG_2900.png";
+import frogLefF8 from "./assets/gifs/frogLeft/IMG_2901.png";
+import frogLefF9 from "./assets/gifs/frogLeft/IMG_2905.png";
+import frogLefF10 from "./assets/gifs/frogLeft/IMG_2910.png";
+import frogLefF11 from "./assets/gifs/frogLeft/IMG_2911.png";
+import frogLefF12 from "./assets/gifs/frogLeft/IMG_2912.png";
+import frogLefF13 from "./assets/gifs/frogLeft/IMG_2913.png";
+import frogLefF14 from "./assets/gifs/frogLeft/IMG_2914.png";
+import frogLefF15 from "./assets/gifs/frogLeft/IMG_2915.png";
+import frogLefF16 from "./assets/gifs/frogLeft/IMG_2916.png";
+
+const frogLeftImage = new AnimatedSprite([
+    {img: loadImage(frogLefF1), duration: 100},
+    {img: loadImage(frogLefF2), duration: 100},
+    {img: loadImage(frogLefF3), duration: 100},
+    {img: loadImage(frogLefF4), duration: 100},
+    {img: loadImage(frogLefF5), duration: 100},
+    {img: loadImage(frogLefF6), duration: 100},
+    {img: loadImage(frogLefF7), duration: 100},
+    {img: loadImage(frogLefF8), duration: 100},
+    {img: loadImage(frogLefF9), duration: 100},
+    {img: loadImage(frogLefF10), duration: 100},
+    {img: loadImage(frogLefF11), duration: 100},
+    {img: loadImage(frogLefF12), duration: 100},
+    {img: loadImage(frogLefF13), duration: 100},
+    {img: loadImage(frogLefF14), duration: 100},
+    {img: loadImage(frogLefF15), duration: 100},
+    {img: loadImage(frogLefF16), duration: 100},
+]);
+
+import frogRightF1 from "./assets/gifs/frogRight/IMG_2917.png";
+import frogRightF2 from "./assets/gifs/frogRight/IMG_2918.png";
+import frogRightF3 from "./assets/gifs/frogRight/IMG_2919.png";
+import frogRightF4 from "./assets/gifs/frogRight/IMG_2920.png";
+import frogRightF5 from "./assets/gifs/frogRight/IMG_2922.png";
+import frogRightF6 from "./assets/gifs/frogRight/IMG_2923.png";
+import frogRightF7 from "./assets/gifs/frogRight/IMG_2924.png";
+import frogRightF8 from "./assets/gifs/frogRight/IMG_2925.png";
+import frogRightF9 from "./assets/gifs/frogRight/IMG_2926.png";
+import frogRightF10 from "./assets/gifs/frogRight/IMG_2925.png";
+import frogRightF11 from "./assets/gifs/frogRight/IMG_2924.png";
+import frogRightF12 from "./assets/gifs/frogRight/IMG_2923.png";
+import frogRightF13 from "./assets/gifs/frogRight/IMG_2922.png";
+import frogRightF14 from "./assets/gifs/frogRight/IMG_2920.png";
+import frogRightF15 from "./assets/gifs/frogRight/IMG_2919.png";
+import frogRightF16 from "./assets/gifs/frogRight/IMG_2918.png";
+import frogRightF17 from "./assets/gifs/frogRight/IMG_2917.png";
+
+const frogRightImage = new AnimatedSprite([
+    {img: loadImage(frogRightF1), duration: 100},
+    {img: loadImage(frogRightF2), duration: 100},
+    {img: loadImage(frogRightF3), duration: 100},
+    {img: loadImage(frogRightF4), duration: 100},
+    {img: loadImage(frogRightF5), duration: 100},
+    {img: loadImage(frogRightF6), duration: 100},
+    {img: loadImage(frogRightF7), duration: 100},
+    {img: loadImage(frogRightF8), duration: 100},
+    {img: loadImage(frogRightF9), duration: 100},
+    {img: loadImage(frogRightF10), duration: 100},
+    {img: loadImage(frogRightF11), duration: 100},
+    {img: loadImage(frogRightF12), duration: 100},
+    {img: loadImage(frogRightF13), duration: 100},
+    {img: loadImage(frogRightF14), duration: 100},
+    {img: loadImage(frogRightF15), duration: 100},
+    {img: loadImage(frogRightF16), duration: 100},
+    {img: loadImage(frogRightF17), duration: 100},
+]);
+
 
 import frog_glitch_f1 from "./assets/gifs/frog_glitch_anim/IMG_2885.png";
 import frog_glitch_f2 from "./assets/gifs/frog_glitch_anim/IMG_2888.png";
@@ -75,6 +141,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
     level1.treeGif.style.top = '0px';
     level1.treeGif.style.width = 'auto';
     level1.treeGif.style.height = 'auto';
+    level1.treeGif.style.zIndex = "100";
     document.body.appendChild(level1.treeGif);
 
     level1.waterfallGif.src = waterfall.src;
@@ -140,8 +207,8 @@ export function start(gameState: GameState, startNextLevel: () => void) {
 
 const frogSprites: Map<Direction, Sprite> = new Map([
     ["static", frogStaticImage as Sprite], // typechecking workaround
-    ["left", frogLeftImage],
-    ["right", frogRightImage],
+    ["left", frogLeftImage as Sprite],
+    ["right", frogRightImage as Sprite],
     ["glitch", frogGlitchImage as Sprite], 
 ]);
 type Direction = "static" | "left" | "right" | "glitch";
@@ -155,8 +222,8 @@ class Frog implements Entity {
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.width = 300;
-        this.height = 300;  
+        this.width = 250;
+        this.height = 250;  
         this.direction = "static";
     }
 
@@ -257,9 +324,9 @@ function draw(level: Level1, dt: number) {
     level.frog.render(level.ctx, dt);
 
     // Score
-    level.ctx.fillStyle = "black";
-    level.ctx.font = "30px lores-12";
-    level.ctx.fillText(`Score: ${level.score.get()}`, 20, 50);
+    level.ctx.fillStyle = "rgba(255, 208, 0)";
+    level.ctx.font = "35px lores-12";
+    level.ctx.fillText(`Score: ${level.score.get()}`, 1750, 50);
 }
 
 function spawnItem(level: Level1) {
