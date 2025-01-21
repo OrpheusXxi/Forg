@@ -219,7 +219,7 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
     const level2: Level2 = {
         ...gameState,
         startNextLevel: startNextLevel,
-        frog: new Frog(800, 950, 150, 150),
+        frog: new Frog(800, 950, 200, 200),
         islands: [],
         trash: [],
         paused: false,
@@ -234,14 +234,14 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
         glitch: false,
         keyPressed: new Map([["ArrowUp", KeyState.NotPressed], ["ArrowDown", KeyState.NotPressed], ["ArrowLeft", KeyState.NotPressed], ["ArrowRight", KeyState.NotPressed]]),
     };
-    level2.glitch_video.src = "assets/videos/rivervid-0000.mp4";
+    /*level2.glitch_video.src = "assets/videos/rivervid-0000.mp4";
     level2.glitch_video.loop = true;
     level2.trashCollected.subscribe((number) => {
-        if (number === 13) {
+        if (number === 11) {
             level2.glitch = true;
             level2.glitch_video.play();
         }
-    })
+    })*/
     
 
     level2.trashCollected.subscribe((number) => {
@@ -286,9 +286,9 @@ for (let i = 0; i < 13; i++) {
     // Create trash linked to this island
     const trash = new Trash(
         island.x + island.width / 2 - 30, // Center trash on the island
-        island.y - 60,                   // Position trash slightly above the island
+        island.y - 10,                   // Position trash slightly above the island
         60,                              // Width of trash
-        60,                              // Height of trash
+        65,                              // Height of trash
         i % trashImages.length           // Random trash type
         
     );
@@ -330,6 +330,8 @@ function draw(level: Level2, dt: number) {
         // Draw background and borders
         level.ctx.drawImage(bgr, 0, 0, 1920, 1080);
     }
+    level.ctx.drawImage(border, 0, 0, 1920, 50);
+    level.ctx.drawImage(border2, 0, 1040, 1920, 50);
 
     // Draw islands
     level.islands.forEach(island => island.render(level.ctx, dt));
@@ -342,7 +344,7 @@ function draw(level: Level2, dt: number) {
     // Score
     level.ctx.fillStyle = "rgba(255, 208, 0)";
     level.ctx.font = "35px lores-12";
-    level.ctx.fillText(`Trash Collected: ${level.trashCollected.get()}/13`, 1750, 50);
+    level.ctx.fillText(`Trash Collected: ${level.trashCollected.get()}/13`, 20, 100);
 }
 
 function checkCollision(level: Level2, item: Entity) {
