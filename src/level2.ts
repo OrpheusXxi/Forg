@@ -234,14 +234,14 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
         glitch: false,
         keyPressed: new Map([["ArrowUp", KeyState.NotPressed], ["ArrowDown", KeyState.NotPressed], ["ArrowLeft", KeyState.NotPressed], ["ArrowRight", KeyState.NotPressed]]),
     };
-    /*level2.glitch_video.src = "assets/videos/rivervid-0000.mp4";
-    level2.glitch_video.loop = true;
-    level2.trashCollected.subscribe((number) => {
-        if (number === 11) {
-            level2.glitch = true;
-            level2.glitch_video.play();
-        }
-    })*/
+
+    let glitch2 = document.getElementById('glitch1') as HTMLVideoElement;
+        glitch2.style.position = 'absolute';
+        glitch2.style.top = '0';
+        glitch2.style.left = '0';
+        glitch2.style.width = '100%';
+        glitch2.style.height = '100%';
+        glitch2.style.zIndex = '3';
     
 
     level2.trashCollected.subscribe((number) => {
@@ -251,7 +251,14 @@ export function start(gameState: GameState, startNextLevel: () => void): void {
             level2.showPopup("Also, the river is poisoned by mercury in many places as it is leaked from gold mines around Amazon that are using mercury for gold purification.");
         } else if (number === 9) {
             level2.showPopup("People’s trash is not helping the situation at all, as you can see. Many South American countries, like Brazil, where I live, suffer from inequality. Therefore many people don’t have access to a proper sewage or trash system and the river is the only place where their trash goes.");
-        } else if (number === 13) {
+        } else if (number === 12) {
+            glitch2.style.display = 'block';
+            glitch2.play();
+            glitch2.onended = () => {
+                glitch2.style.display = 'none';
+            };
+        }
+         else if (number === 13) {
             level2.showPopup("Congratulations! You have collected all the trash. Now you can see the river in its full beauty. But remember, the river is still in danger. You can help by spreading the word about the importance of clean water and by supporting organizations that help to protect the Amazon river. Now come with me, I'll show you another part of the forest.");
          } 
     });

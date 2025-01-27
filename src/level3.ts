@@ -26,7 +26,7 @@ import flower15Url from './assets/images/flower15.png';
 import flower16Url from './assets/images/flower16.png';
 import flower17Url from './assets/images/flower17.png';
 import flower18Url from './assets/images/flower18.png';
-import plainboxUrl from './assets/images/level3_plainbox.png';
+import plainboxUrl from './assets/images/plainbox-square.png';
 import acorn1Url from './assets/images/acornMain.png';
 import frogUrl from './assets/gifs/frogblink.gif';
 import frogglitchUrl from './assets/gifs/frogglitch.gif';
@@ -136,7 +136,7 @@ export function start(gameState: GameState, startNextLevel: () => void) {
         firstCard: null,
         secondCard: null,
         matchedPairs: 0,
-        timer: 120,
+        timer: 150,
         interval: 1000,
         shouldContinueFn: () => true,
         click: undefined as any as (e: MouseEvent) => void,
@@ -206,7 +206,7 @@ function update(level: Level3, dt: number) {
 
 
 function resetLevel(level: Level3) { 
-    level.timer = 120; // Reset timer
+    level.timer = 150; // Reset timer
     level.cards.forEach(card => {
         card.revealed = false;
         card.matched = false;
@@ -260,6 +260,14 @@ function handleClick(level: Level3, x: number, y: number) {
 
 }
 
+let glitch3 = document.getElementById('glitch3') as HTMLVideoElement;
+    glitch3.style.position = 'absolute';
+    glitch3.style.top = '0';
+    glitch3.style.left = '0';
+    glitch3.style.width = '100%';
+    glitch3.style.height = '100%';
+    glitch3.style.zIndex = '1';
+
 function checkMatch(level: Level3) {
     if (level.firstCard && level.secondCard && card1Number === card2Number) {
         level.firstCard.matched = true;
@@ -269,6 +277,14 @@ function checkMatch(level: Level3) {
         if (level.matchedPairs === 1) {
             level.showPopup("Great! You found your first match!");
         }
+
+        if (level.matchedPairs === 2) {
+            glitch3.style.display = 'block';
+            glitch3.play();
+            glitch3.onended = () => {
+                glitch3.style.display = 'none';
+                
+        }}
 
 
         if (level.matchedPairs >= 18) {

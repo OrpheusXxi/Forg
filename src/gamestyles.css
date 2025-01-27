@@ -179,6 +179,19 @@ text {
     display: none;
 }
 
+#glitch1 {
+    display: none;
+}
+
+#glitch2 {
+    display: none;
+}
+
+#glitch3 {
+    display: none;
+}   
+
+
 canvas {
     display: none;
     border: 1px solid black;
